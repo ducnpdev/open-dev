@@ -11,3 +11,6 @@
 - source code in forder gin-web-framework
 
 ## Rate Limit
+
+## Redis
+- read: 
