@@ -13,4 +13,4 @@
 ## Rate Limit
 
 ## Redis
-- read: 
+- read: https://github.com/ducnpdev/open-dev/tree/master/redis
