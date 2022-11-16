@@ -20,4 +20,4 @@
 ## Golang Usecase
 
 ### Resize Image
-- edit size của image từ base64: 
+- edit size của image từ base64: https://github.com/ducnpdev/open-dev/tree/master/usecase#resize-image
