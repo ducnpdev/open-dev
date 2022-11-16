@@ -50,5 +50,8 @@ func toBase64(dst *image.NRGBA) (string, error) {
 ```
 - Output:
 ![alt text](images/resizeImage.png)
+- Link:
+  - convert image to base64: https://www.base64-image.de/
+  - convert base64 to image: https://codebeautify.org/base64-to-image-converter
 
 ## 
