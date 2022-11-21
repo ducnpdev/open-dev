@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"open-dev/usecase/rsa"
 	"time"
 )
 
 func main() {
+	rsa.MainRsa()
 
+	//
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(time.Millisecond)*10)
 	defer cancel()

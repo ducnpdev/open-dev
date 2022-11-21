@@ -10,6 +10,8 @@
   - [Resize Image](#resize-image)
   - [Context](#context)
     - [Timeout](#timeout)
+  - [RSA](#rsa)
+    - [Encrypt Decrypt Data](#encrypt-decrypt)
 - [Serverless Framework](#serverless-framework)
 - [Aws](#aws)
   - [Lambda](#lambda)
@@ -30,6 +32,9 @@
 
 ### Context
 - Handle context timeout: https://github.com/ducnpdev/open-dev/blob/master/usecase/context/timeout.go
+
+### RSA
+- Encrypt Decrypt Data, code example
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
