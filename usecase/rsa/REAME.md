@@ -93,3 +93,6 @@ func DecryptData(private *rsa.PrivateKey, data string) (string, error) {
 	return string(dataDecrypt), nil
 }
 ```
+
+## Full Source Code:
+- https://github.com/ducnpdev/open-dev/blob/master/usecase/rsa/gen.go
