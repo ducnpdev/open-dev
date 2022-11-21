@@ -7,7 +7,12 @@
 - [Rate Limit](#rate-limit)
 - [Redis](#redis)
 - [Golang Usecase](#golang-usecase)
-  - [Resize Image] (#resize-image)
+  - [Resize Image](#resize-image)
+  - [Context](#context)
+    - [Timeout](#timeout)
+- [Serverless Framework](#serverless-framework)
+- [Aws](#aws)
+  - [Lambda](#lambda)
 ## Gin Web Framework
 ### API Examples
 - source code in forder gin-web-framework
@@ -22,6 +27,9 @@
 ### Resize Image
 - edit size of image from base64: https://github.com/ducnpdev/open-dev/tree/master/usecase#resize-image
 
+
+### Context
+- Handle context timeout: https://github.com/ducnpdev/open-dev/blob/master/usecase/context/timeout.go
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
