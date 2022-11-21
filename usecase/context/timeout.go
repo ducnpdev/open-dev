@@ -1,4 +1,4 @@
-package main
+package context
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func TimeOut() {
 
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(time.Millisecond)*10)

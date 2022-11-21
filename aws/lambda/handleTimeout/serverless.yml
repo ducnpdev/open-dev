@@ -1,0 +1,42 @@
+service: handletimeout
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: ap-southeast-1
+  logs:
+    restApi:
+      roleManagedExternally: true
+      accessLogging: true
+      fullExecutionData: true
+      executionLogging: true
+  # apiGateway:
+    # metrics: true
+    # apiKeySourceType: AUTHORIZER
+    # apiKeys:
+    #   - free:
+    #       - dev-timeout
+    # usagePlan:
+    #   - free:
+    #       quota:
+    #         limit: 10
+    #         period: DAY
+    #       throttle:
+    #         burstLimit: 5
+    #         rateLimit: 3
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  timeout:
+    handler: bin/timeout
+    timeout: 2
+    memorySize: 256
+    role: "arn:aws:iam::261093894796:role/iam-role-service-lambda-ibft-vietqr-api"
+    events:
+      - http:
+          path: /timeout
+          method: post
