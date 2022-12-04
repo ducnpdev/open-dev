@@ -35,6 +35,9 @@
 
 ### RSA
 - Encrypt Decrypt Data, code example: https://github.com/ducnpdev/open-dev/blob/master/usecase/rsa/REAME.md
+
+### ecdsa algorithm
+- This is code example: https://github.com/ducnpdev/open-dev/blob/master/usecase/ecdsa/ecdsa.go
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
