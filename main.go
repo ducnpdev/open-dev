@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"open-dev/usecase/ecdsa"
 	"open-dev/usecase/rsa"
 	"time"
 )
 
 func main() {
+	ecdsa.MainECDSA()
 	rsa.MainRsa()
 
 	//
