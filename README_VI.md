@@ -30,6 +30,14 @@
 ### Context
 - Handle context timeout: https://github.com/ducnpdev/open-dev/blob/master/usecase/context/timeout.go
 
+### Thuật Toán RSA
+- Sử dụng thuật toán rsa để mã hoá thông tin nhạy cảm.
+- code ví dụ: https://github.com/ducnpdev/open-dev/blob/master/usecase/rsa/REAME.md
+
+### Thuận Toán ECDSA
+- Sử dụng thuật toán ecdsa để làm chữ kí số, được ứng dụng rộng rãi trong blockchain.
+- Code ví dụ: https://github.com/ducnpdev/open-dev/blob/master/usecase/ecdsa/ecdsa.go
+
 ## Serverless Framework
 - 
 ## Aws
