@@ -41,7 +41,7 @@
 
 ## Aws
 ### Lambda
-- Demo simple lambda function: 
+- Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/

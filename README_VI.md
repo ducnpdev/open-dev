@@ -41,9 +41,9 @@
 ## Serverless Framework
 - 
 ## Aws
+- Cách tạo credential aws, đọc blog: https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP
 ### Lambda
-1.  Handle timeout
-- Handle lambda timeout: 
+- Create source đơn giản: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
