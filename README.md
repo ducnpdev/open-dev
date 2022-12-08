@@ -38,6 +38,11 @@
 
 ### ecdsa algorithm
 - This is code example: https://github.com/ducnpdev/open-dev/blob/master/usecase/ecdsa/ecdsa.go
+
+## Aws
+### Lambda
+- Demo simple lambda function: 
+
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
