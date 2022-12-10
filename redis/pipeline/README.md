@@ -2,6 +2,7 @@
 
 ## redis ZRANGE:
 ### usecase:
+- requirement: handle logic attempt access for period
 ### implement
 - document: https://redis.io/commands/zadd/
 - code example: https://github.com/ducnpdev/open-dev/blob/master/redis/pipeline/range.go
