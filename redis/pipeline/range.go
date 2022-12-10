@@ -13,7 +13,7 @@ import (
 func Main() {
 	ctx := context.Background()
 	pline := pipeline()
-	excutePipe(ctx, pline)
+	checkattempt(ctx, pline)
 }
 
 func countExec(r []redis.Cmder) int {
@@ -31,7 +31,7 @@ func countExec(r []redis.Cmder) int {
 	return countSlice
 }
 
-func excutePipe(ctx context.Context, pline redis.Pipeliner) {
+func checkattempt(ctx context.Context, pline redis.Pipeliner) {
 
 	now := time.Now()
 
