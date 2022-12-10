@@ -39,7 +39,7 @@
 - Code ví dụ: https://github.com/ducnpdev/open-dev/blob/master/usecase/ecdsa/ecdsa.go
 
 ## Serverless Framework
-- 
+- cài đặt serverless: https://viblo.asia/p/golang-cai-dat-serverless-framework-lambada-aws-4dbZNQXkKYM
 ## Aws
 - Cách tạo credential aws, đọc blog: https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP
 ### Lambda

@@ -9,6 +9,6 @@ func BenchmarkPrimeNumbers(b *testing.B) {
 	ctx := context.Background()
 	pline := pipeline()
 	for i := 0; i < b.N; i++ {
-		excutePipe(ctx, pline)
+		checkattempt(ctx, pline)
 	}
 }
