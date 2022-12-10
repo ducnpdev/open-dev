@@ -11,7 +11,7 @@
     -   Một cách khác đó là sử dụng redis pipeline. Tại sao dùng redis để thay thế đơn giản nó nhanh.
 ### implement
 - document: https://redis.io/commands/zadd/
-- code mẫu: 
+- code mẫu: https://github.com/ducnpdev/open-dev/blob/master/redis/pipeline/range.go
 
 ### benchmark
 - chỉ thực hiện 1 lân.

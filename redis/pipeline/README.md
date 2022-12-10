@@ -4,7 +4,7 @@
 ### usecase:
 ### implement
 - document: https://redis.io/commands/zadd/
-- code example: 
+- code example: https://github.com/ducnpdev/open-dev/blob/master/redis/pipeline/range.go
 
 ### benchmark
 - execute only one
