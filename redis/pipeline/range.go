@@ -42,8 +42,10 @@ func checkattempt(ctx context.Context, pline redis.Pipeliner) {
 
 	timeRemove := time.Now().Add((-1) * time.Second * time.Duration(ttl))
 	formatTime := strconv.FormatInt(timeRemove.UnixNano(), 10)
+	// remove item, if it is expire
 	pline.ZRemRangeByScore(ctx, key, "0", formatTime)
 
+	// add subitem for key
 	rcmd := pline.ZAdd(ctx, key, &redis.Z{
 		Score:  float64(now.UnixNano()),
 		Member: now,
@@ -51,14 +53,17 @@ func checkattempt(ctx context.Context, pline redis.Pipeliner) {
 	if err := rcmd.Err(); err != nil {
 		panic(err)
 	}
+	// set ttl for new subitem key
 	pline.Expire(ctx, key, time.Second*time.Duration(ttl))
 
+	// get all subitem
 	pline.ZRangeWithScores(ctx, key, 0, 100)
 	outputResult, err := pline.Exec(ctx)
 
 	if err != nil {
 		panic(err)
 	}
+	// counter
 	count := countExec(outputResult)
 	fmt.Println("count:", count)
 }
