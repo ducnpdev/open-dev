@@ -15,6 +15,8 @@
 - [Serverless Framework](#serverless-framework)
 - [Aws](#aws)
   - [Lambda](#lambda)
+- [Performances](#performances)
+  - [Standard](#standard)
 ## Gin Web Framework
 ### API Examples
 - source code in forder gin-web-framework
@@ -43,6 +45,11 @@
 ## Aws
 ### Lambda
 - Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
+
+## Performances
+### Standard
+- Test simple of function return error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
+- Test convert string to int of 3 function: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
 
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
