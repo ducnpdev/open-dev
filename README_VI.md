@@ -13,6 +13,8 @@
 - [Serverless Framework](#serverless-framework)
 - [Aws](#aws)
   - [Lambda](#lambda)
+- [Performances](#performances)
+  - [Standard](#standard)
 ## Gin Web Framework
 ### API Examples
 - source code in demo api simples: 
@@ -44,7 +46,10 @@
 - Cách tạo credential aws, đọc blog: https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP
 ### Lambda
 - Create source đơn giản: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
-
+## Performances
+### Standard
+- test 2 hàm trả error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
+- so sánh thời gian xử lý hàm convert string sang int: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
