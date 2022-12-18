@@ -1,7 +1,9 @@
 package main
 
-import "open-dev/redis/pipeline"
+import (
+	"open-dev/aws/sqs"
+)
 
 func main() {
-	pipeline.Main()
+	sqs.MainSQS()
 }

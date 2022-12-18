@@ -1,0 +1,24 @@
+service: lambda-go
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  timeout: 6
+  memorySize: 256
+
+  environment:
+    env_test: "value-test"
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  hello:
+    handler: bin/hello
+    events:
+      - httpApi:
+          path: /hello
+          method: post
