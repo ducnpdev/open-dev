@@ -1,9 +1,9 @@
-package main
+package mains
 
 import (
 	"open-dev/aws/sqs"
 )
 
-func main() {
+func MainSQS() {
 	sqs.MainSQS()
 }
