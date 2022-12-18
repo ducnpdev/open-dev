@@ -18,6 +18,11 @@ type RequestBodyAPIGW struct {
 	Data      interface{} `json:"data"`
 }
 
+// type ResponseBodyAPIGW struct {
+// 	RequestID string `json:"request_id"`
+// 	Message   string `json:"message"`
+// }
+
 func Handler(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Response, error) {
 	var (
 		req  = RequestBodyAPIGW{}
