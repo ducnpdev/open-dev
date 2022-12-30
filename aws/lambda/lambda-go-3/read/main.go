@@ -5,33 +5,35 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"open-dev/aws/lambda/lambda-go-3/models"
+	"open-dev/aws/lambda/lambda-go-3/pkg"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 )
 
 type Response events.APIGatewayProxyResponse
 
 type RequestBodyAPIGW struct {
-	RequestID string      `json:"requestId"`
-	Data      interface{} `json:"data"`
+	RequestID string  `json:"requestId"`
+	Data      UserDTO `json:"data"`
 }
 
-// type ResponseBodyAPIGW struct {
-// 	RequestID string `json:"request_id"`
-// 	Message   string `json:"message"`
-// }
+type UserDTO struct {
+	ID    int    `json:"userId"`
+	Name  string `json:"name"`
+	User  string `json:"userName"`
+	Phone string `json:"phone"`
+}
 
-func Handler(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Response, error) {
+func Read(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Response, error) {
 	var (
 		req  = RequestBodyAPIGW{}
 		resp = Response{
-			StatusCode:      404,
+			StatusCode:      400,
 			IsBase64Encoded: false,
 			Headers: map[string]string{
-				"Content-Type":           "application/json",
-				"X-MyCompany-Func-Reply": "hello-handler",
+				"Content-Type": "application/json",
 			},
 		}
 	)
@@ -39,16 +41,30 @@ func Handler(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Respo
 	if err != nil {
 		resp.Body = ParseResponse(HttpResponse{
 			Uuid: req.RequestID,
-			Err:  err})
+			Err:  err,
+		})
+		// return resp, nil
+		req.Data.ID = 2
+	}
+	db, err := pkg.InitPostgres()
+
+	if err != nil {
+		resp.Body = ParseResponse(HttpResponse{
+			Uuid: req.RequestID,
+			Err:  err,
+		})
+		resp.StatusCode = 500
 		return resp, nil
 	}
 	resp.StatusCode = 200
-	resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Data: req.Data})
+	var user = models.UserModel{}
+	err = db.Table("game_tet.users").Where("id = ?", req.Data.ID).First(&user).Error
+	if err != nil {
+		resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Err: err})
+		return resp, nil
+	}
+	resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Data: user})
 	return resp, nil
-}
-
-func main() {
-	lambda.Start(Handler)
 }
 
 type HttpResponse struct {
@@ -98,4 +114,8 @@ func responseErr(respBody HttpResponse) string {
 	}
 	json.HTMLEscape(&buf, body)
 	return buf.String()
+}
+func main() {
+	// lambda.Start(Read)
+	Read(context.Background(), events.APIGatewayProxyRequest{})
 }
