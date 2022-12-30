@@ -2,19 +2,23 @@
 
 ## Contents
 
-- [Gin Web Framework](#gin-web-framework)
-  - [API Examples](#api-examples)
-- [Rate Limit](#rate-limit)
-- [Redis](#redis)
-- [Golang Usecase](#golang-usecase)
-  - [Resize Image](#resize-image)
-  - [Context](#context)
-    - [Timeout](#timeout)
-- [Serverless Framework](#serverless-framework)
-- [Aws](#aws)
-  - [Lambda](#lambda)
-- [Performances](#performances)
-  - [Standard](#standard)
+- [open-dev](#open-dev)
+  - [Contents](#contents)
+  - [Gin Web Framework](#gin-web-framework)
+    - [API Examples](#api-examples)
+  - [Rate Limit](#rate-limit)
+  - [Redis](#redis)
+  - [Golang Usecase](#golang-usecase)
+    - [Resize Image](#resize-image)
+    - [Context](#context)
+    - [Thuật Toán RSA](#thuật-toán-rsa)
+    - [Thuận Toán ECDSA](#thuận-toán-ecdsa)
+  - [Serverless Framework](#serverless-framework)
+  - [Aws](#aws)
+    - [Lambda](#lambda)
+  - [Performances](#performances)
+    - [Standard](#standard)
+  - [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
 - source code in demo api simples: 
@@ -46,6 +50,7 @@
 - Cách tạo credential aws, đọc blog: https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP
 ### Lambda
 - Create source đơn giản: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
+- Series lambda function đơn giản: https://viblo.asia/s/golang-lambda-serverless-vElaB8eD5kw
 ## Performances
 ### Standard
 - test 2 hàm trả error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
