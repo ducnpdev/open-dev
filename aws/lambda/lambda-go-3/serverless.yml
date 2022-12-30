@@ -6,9 +6,13 @@ provider:
   runtime: go1.x
   timeout: 6
   memorySize: 256
+  region: ap-southeast-1
 
   environment:
-    env_test: "value-test"
+    DB_USER: ""
+    DB_PASS: ""
+    DB_HOST: ""
+    DB_SERVICE: ""
 
 package:
   patterns:
@@ -16,9 +20,27 @@ package:
     - ./bin/**
 
 functions:
-  hello:
-    handler: bin/hello
+  create:
+    handler: bin/create
     events:
       - httpApi:
-          path: /hello
+          path: /create
+          method: post
+  delete:
+    handler: bin/delete
+    events:
+      - httpApi:
+          path: /delete
+          method: post
+  read:
+    handler: bin/read
+    events:
+      - httpApi:
+          path: /read
+          method: get
+  update:
+    handler: bin/update
+    events:
+      - httpApi:
+          path: /update
           method: post
