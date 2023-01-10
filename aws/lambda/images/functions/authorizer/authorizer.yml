@@ -1,0 +1,7 @@
+authorizerOpenapi:
+    runtime: python3.8
+    handler: functions/authorizer/openapi-lambda-auth.lambda_handler
+    timeout: 3
+    memorySize: 128
+    description: authorizer openapi
+    role: '${file(envs/authorizer/${opt:stage, sls:stage}.json):ROLE}'

@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "input validator body face index",
+    "required": ["data","requestTime","requestId"],
+    "properties": {
+      "data": {
+        "type": "object",
+        "title": "data index face",
+        "required": ["image"],
+        "properties": {
+            "image": { 
+                "type": "string",
+                "maxLength": 1000000
+            },
+            "addess": { 
+                "type": "string",
+                "maxLength": 1000
+            },
+            "phone": { 
+                "type": "string",
+                "maxLength": 15
+            },
+            "cccd": { 
+                "type": "string",
+                "maxLength": 20
+            },
+            "name": { 
+                "type": "string",
+                "maxLength": 30
+            }
+        }
+      },
+      "requestTime":{
+        "type": "string",
+        "title": "request Time",
+        "maxLength": 100
+      },
+      "requestId":{
+        "type": "string",
+        "title": "request Id",
+        "maxLength": 100
+      }
+
+    }
+  }
+  
