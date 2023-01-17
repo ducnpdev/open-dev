@@ -16,7 +16,6 @@
   - [Serverless Framework](#serverless-framework)
   - [Aws](#aws)
     - [Lambda](#lambda)
-      - [Crud with postgres](#crud-with-postgres)
   - [Performances](#performances)
     - [Standard](#standard)
   - [Contact:](#contact)
@@ -48,8 +47,8 @@
 ## Aws
 ### Lambda
 - Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
-#### Crud with postgres
-- link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
+- Crud with postgres, link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
+
 ## Performances
 ### Standard
 - Test simple of function return error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
