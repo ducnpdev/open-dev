@@ -1,0 +1,46 @@
+
+service: images
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: ap-southeast-1
+
+  environment:
+    S3_BUCKET: "images-dev-serverlessdeploymentbucket-1h7wjymn8ja6t"
+    IMAGE_BLOG: "image-blog/"
+    ROLE: "images-dev-ap-southeast-1-lambdaRole"
+    
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  insertImage:
+    handler: bin/insertImage
+    timeout: 3
+    memorySize: 512
+    description: insert image of blog to s3
+    events:
+      - http:
+          path: /image/insert
+          method: post
+          # private: true
+    environment:
+      TEST_ENV: "test"
+      TEST_1_ENV: "tes11t"
+  getImage:
+    handler: bin/getImage
+    timeout: 3
+    memorySize: 512
+    description: get image of blog to s3
+    events:
+      - http:
+          path: /image/get
+          method: post
+          # private: true
+    environment:
+      TEST_ENV: "test"
+      TEST_1_ENV: "tes11t"
