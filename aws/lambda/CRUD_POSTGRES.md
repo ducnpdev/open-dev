@@ -1,8 +1,8 @@
 # [Go] Lambda CRUD với Postgres
 ## Mục tiêu
-* thêm mới user
+* add new user
 * get user by id
-* get list user
+* update user
 * delete user
 
 ## Khởi tạo project
@@ -31,7 +31,6 @@
   ```
 
 ## List function
-
 ### Thêm 1 user
 * tạo endpoint trong file serverless:
 ```yml
