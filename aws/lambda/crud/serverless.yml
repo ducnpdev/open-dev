@@ -1,0 +1,56 @@
+service: go-crud-postgres
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  timeout: 2
+  memorySize: 512
+  region: ap-southeast-1
+
+  environment:
+    S3_BUCKET: "images-dev-serverlessdeploymentbucket-1h7wjymn8ja6t"
+    IMAGE_BLOG: "image-blog/"
+    ROLE: "images-dev-ap-southeast-1-lambdaRole"
+    DB_USER: "postgres"
+    DB_PASS: "qojse3-suwkub-tesKox"
+    DB_HOST: "simpson.cd5ykwloyirn.ap-southeast-1.rds.amazonaws.com"
+    DB_PORT: 5432
+    DB_SERVICE: "postgres"
+    DB_SCHEMA: "public"
+    IS_DEBUG_SQL: true
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  create:
+    handler: bin/create
+    description: create new user
+    events:
+      - http:
+          path: /create
+          method: post
+  delete:
+    handler: bin/delete
+    description: delete user by id
+    events:
+      - http:
+          path: /delete
+          method: post
+  read:
+    handler: bin/read
+    description: get user detail by id
+    events:
+      - http:
+          path: /read
+          method: get
+  update:
+    handler: bin/update
+    description: update user by id
+    events:
+      - http:
+          path: /update
+          method: post
