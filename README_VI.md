@@ -16,6 +16,7 @@
   - [Serverless Framework](#serverless-framework)
   - [Aws](#aws)
     - [Lambda](#lambda)
+      - [Crud with postgres](#crud-with-postgres)
   - [Performances](#performances)
     - [Standard](#standard)
   - [Contact:](#contact)
@@ -51,6 +52,9 @@
 ### Lambda
 - Create source đơn giản: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 - Series lambda function đơn giản: https://viblo.asia/s/golang-lambda-serverless-vElaB8eD5kw
+  
+#### Crud with postgres
+- link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
 ## Performances
 ### Standard
 - test 2 hàm trả error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
