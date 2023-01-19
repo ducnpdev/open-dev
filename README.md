@@ -6,8 +6,8 @@
   - [Contents](#contents)
   - [Gin Web Framework](#gin-web-framework)
     - [API Examples](#api-examples)
-  - [Rate Limit](#rate-limit)
   - [Redis](#redis)
+    - [Rate Limit](#rate-limit)
   - [Golang Usecase](#golang-usecase)
     - [Resize Image](#resize-image)
     - [Context](#context)
@@ -23,10 +23,10 @@
 ### API Examples
 - source code in forder gin-web-framework
 
-## Rate Limit
-- read article lear more rate-limit: https://viblo.asia/p/golang-ratelimit-la-gi-su-dung-ByEZkn3qKQ0
 ## Redis
 - read article install redis: https://github.com/ducnpdev/open-dev/tree/master/redis
+### Rate Limit
+- read article lear more rate-limit: https://viblo.asia/p/golang-ratelimit-la-gi-su-dung-ByEZkn3qKQ0
 
 ## Golang Usecase
 
