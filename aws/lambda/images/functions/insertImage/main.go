@@ -23,8 +23,8 @@ func main() {
 	lambda.Start(insertImage)
 }
 
-type DataFaceIndexRequest struct {
-	Image     string `json:"image"`
+type DataSaveImageS3 struct {
+	Image     string `json:"image"` // base64
 	Phone     string `json:"phone"`
 	Name      string `json:"name"`
 	FileName  string `json:"file_name"`
@@ -41,9 +41,9 @@ type CommonResponse struct {
 	ResponseMessage string `json:"responseMessage"`
 }
 
-type FaceIndexRequest struct {
+type SaveImageS3 struct {
 	CommonRequest
-	DataInput DataFaceIndexRequest `json:"data"`
+	DataInput DataSaveImageS3 `json:"data"`
 }
 
 func insertImage(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -53,7 +53,7 @@ func insertImage(ctx context.Context, req events.APIGatewayProxyRequest) (events
 		}
 		err    error
 		logger = log.Default()
-		reqDTO = FaceIndexRequest{}
+		reqDTO = SaveImageS3{}
 	)
 	fmt.Println("insert image")
 	err = json.Unmarshal([]byte(req.Body), &reqDTO)
@@ -144,9 +144,6 @@ func StoreS3(ctx context.Context, reqDTO StoreS3Req) (*s3.PutObjectOutput, Store
 		fmt.Println("image decode string err", err)
 		return putOut, dataRes, err
 	}
-	// if len(*baseImage) == 0 {
-	// 	return putOut, dataRes, fmt.Errorf("byte image decode empty")
-	// }
 
 	mimeType := http.DetectContentType(byteImage)
 	fmt.Println("mime type:", mimeType)
@@ -181,6 +178,7 @@ func CreateSession(req AwsReq) *session.Session {
 	}))
 	return sess
 }
+
 func GetS3Bucket() string {
 	bucket := os.Getenv("S3_BUCKET")
 	if bucket != "" {

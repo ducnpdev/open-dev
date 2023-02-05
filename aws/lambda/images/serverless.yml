@@ -8,9 +8,8 @@ provider:
   region: ap-southeast-1
 
   environment:
-    S3_BUCKET: "images-dev-serverlessdeploymentbucket-1h7wjymn8ja6t"
+    S3_BUCKET: "images-dev-serverlessdeploymentbucket-1g3trol0zorpp"
     IMAGE_BLOG: "image-blog/"
-    ROLE: "images-dev-ap-southeast-1-lambdaRole"
     
 package:
   patterns:

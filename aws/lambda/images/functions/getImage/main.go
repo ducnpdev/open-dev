@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -48,6 +47,7 @@ func CreateS3Client(req AwsReq) *s3.S3 {
 	client := s3.New(sess)
 	return client
 }
+
 func PresignUrl(reqAws AwsReq, presign PresignUrlReq) (string, error) {
 	var (
 		url string
@@ -198,56 +198,6 @@ type StoreS3Reponse struct {
 	PathImage string `json:"pathImage"`
 }
 
-func StoreS3(ctx context.Context, reqDTO StoreS3Req) (*s3.PutObjectOutput, StoreS3Reponse, error) {
-	var (
-		dataRes = StoreS3Reponse{}
-		err     error
-		putOut  = &s3.PutObjectOutput{}
-	)
-	if reqDTO.BaseImage == nil {
-		return putOut, dataRes, fmt.Errorf("base64 of image is require")
-	}
-	if len(*reqDTO.BaseImage) == 0 {
-		return putOut, dataRes, fmt.Errorf("byte image decode empty")
-	}
-	splitBase := strings.Split(*reqDTO.BaseImage, "base64,")
-	var newBase string
-	if len(splitBase) > 1 {
-		newBase = splitBase[1]
-	} else {
-		newBase = splitBase[0]
-	}
-	byteImage, err := base64.StdEncoding.DecodeString(newBase)
-	if err != nil {
-		fmt.Println("image decode string err", err)
-		return putOut, dataRes, err
-	}
-	// if len(*baseImage) == 0 {
-	// 	return putOut, dataRes, fmt.Errorf("byte image decode empty")
-	// }
-
-	mimeType := http.DetectContentType(byteImage)
-	fmt.Println("mime type:", mimeType)
-	if !strings.Contains(mimeType, "jpeg") && !strings.Contains(mimeType, "png") {
-		return putOut, dataRes, fmt.Errorf("mime type error")
-	}
-
-	byteReader := bytes.NewReader(byteImage)
-
-	dataRes.PathImage = reqDTO.PathImage
-	session := CreateSession(AwsReq{
-		CustomEndpoint: reqDTO.CustomEndpoint,
-	})
-	putOut, err = s3.New(session).PutObject(&s3.PutObjectInput{
-		Body:        byteReader,
-		Bucket:      aws.String(GetS3Bucket()),
-		Key:         aws.String(dataRes.PathImage),
-		ContentType: &mimeType,
-	})
-
-	return putOut, dataRes, err
-}
-
 type AwsReq struct {
 	CustomEndpoint bool
 	AssumeRole     bool
@@ -259,6 +209,7 @@ func CreateSession(req AwsReq) *session.Session {
 	}))
 	return sess
 }
+
 func GetS3Bucket() string {
 	bucket := os.Getenv("S3_BUCKET")
 	if bucket != "" {
