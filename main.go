@@ -1,9 +1,9 @@
-package mains
+package main
 
 import (
-	"open-dev/aws/sqs"
+	"open-dev/concurrentcy"
 )
 
-func MainSQS() {
-	sqs.MainSQS()
+func main() {
+	concurrentcy.MainErrorHandling()
 }
