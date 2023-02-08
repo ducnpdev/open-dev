@@ -80,6 +80,7 @@ func CallGood(done <-chan interface{}, urls ...string) <-chan CallResult {
 func RunErrorGood() {
 	done := make(chan interface{})
 	defer close(done)
+	// create indicator for break follow
 	count := 0
 	urls := []string{"a", "https://www.google.com", "b", "c", "d"}
 	for resp := range CallGood(done, urls...) {
@@ -87,15 +88,13 @@ func RunErrorGood() {
 		// and cast error from goroutine
 		if resp.Error != nil {
 			count++
-			fmt.Printf("error: %v", resp.Error)
-			fmt.Println("count:", count)
-			if count >= 3 {
-				fmt.Println("Too many errors, breaking!")
+			if count > 1 {
+				fmt.Println("breaking!, because too many errors")
 				break
 			}
 			continue
 		}
-		fmt.Printf("Response: %v\n", resp.Response.Status)
+		fmt.Printf("Response http status: %v\n", resp.Response.Status)
 	}
 
 }
