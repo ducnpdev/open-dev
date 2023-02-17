@@ -1,13 +1,12 @@
-package main
+package concurrency
 
-import (
-	"fmt"
-	"net/http"
-	_ "net/http/pprof"
-	"os"
-	"os/signal"
-	"syscall"
-)
+import "fmt"
+
+// MainLeaks goroutine leaks memory
+func MainLeaks() {
+	leak()
+	leak()
+}
 
 func leak() {
 	doWork := func(strings <-chan string) <-chan interface{} {
@@ -31,25 +30,4 @@ func leak() {
 	doWork(nil)
 	// Perhaps more work is done here
 	fmt.Println("Done.")
-}
-
-func main() {
-
-	leak()
-	leak()
-	leak()
-
-	go func() {
-		http.ListenAndServe(":1234", nil)
-	}()
-
-	//
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	done := make(chan bool, 1)
-	go func() {
-		<-sigs
-		done <- true
-	}()
-	<-done
 }
