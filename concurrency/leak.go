@@ -4,11 +4,11 @@ import "fmt"
 
 // MainLeaks goroutine leaks memory
 func MainLeaks() {
-	leak()
-	leak()
+	Leak()
+	Leak()
 }
 
-func leak() {
+func Leak() {
 	doWork := func(strings <-chan string) <-chan interface{} {
 		completed := make(chan interface{})
 		go func() {
