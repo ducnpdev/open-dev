@@ -1,55 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	_ "net/http/pprof"
-	"os"
-	"os/signal"
-	"syscall"
+	"open-dev/kafka"
 )
 
-func leak() {
-	doWork := func(strings <-chan string) <-chan interface{} {
-		completed := make(chan interface{})
-		go func() {
-			defer func() {
-				fmt.Println("doWork exited.")
-			}()
-			defer func() {
-				close(completed)
-			}()
-			for s := range strings {
-				// Do something interesting
-				fmt.Println(s)
-			}
-		}()
-		fmt.Println("end function doWork")
-		return completed
-	}
-	fmt.Println("dowork")
-	doWork(nil)
-	// Perhaps more work is done here
-	fmt.Println("Done.")
-}
-
 func main() {
-
-	leak()
-	leak()
-	leak()
-
-	go func() {
-		http.ListenAndServe(":1234", nil)
-	}()
-
-	//
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	done := make(chan bool, 1)
-	go func() {
-		<-sigs
-		done <- true
-	}()
-	<-done
+	kafka.MainKafka()
 }
