@@ -135,3 +135,157 @@ func PreventLeakReceive() {
 newRandStream closure exited.
 ```
 - Như đã nhìn thấy, goroutine thực sữ đã được clean-up.
+
+## select statement
+- Để có thể biết `select` như thế nào, cách sử dụng, hãy xem ví dụ dưới.
+```go
+func example() {
+	var ch1, ch2 <-chan interface{}
+	var ch3 chan<- interface{}
+	select {
+	case <-ch1:
+		// Do something
+	case <-ch2:
+		// Do something
+	case ch3 <- struct{}{}:
+		// Do something
+	}
+}
+```
+  - nhìn code thì nó gần như giống với `switch case`, nhưng thực tế là không, nó là list của các case statement, và là điểm kết thúc của `select` là các `case`.
+  - Không như `switch case` các case không thực hiện tuần tự và cũng sẽ không tự động thực thi nếu không có tín hiệu đầu vào, ở đây là 1 `channel`
+- Thay vào đó, tất cả `channel` sẽ được đọc và ghi đồng thời, nếu trong trường hợp không có `channel` nào ready, thì tất cả sẽ block. Đợi đến khi có 1 channel sắn sàng, thì sẽ lựa chọn case tương ứng để thực thi. 
+- ví dụ:
+```go
+func Example2() {
+	start := time.Now()
+	c := make(chan interface{})
+	go func() {
+		time.Sleep(5 * time.Second)
+		close(c) // (1)
+	}()
+	fmt.Println("Blocking on read...")
+	select {
+	case <-c: // (2)
+		fmt.Printf("Unblocked %v later.\n", time.Since(start))
+	}
+}
+```
+- ghi chú:
+  - (1) close `channel` sau khi đợi 5 giây.
+  - (2) đợi để read value từ `channel`.
+- output:
+```
+Blocking on read...
+Unblocked 5.001199292s later.
+```
+  - như kết quả thì process sẽ unblock sau 5 giây.
+  - trong trường hợp này, cũng là một cách đơn giản và hiệu quả để đợi một process đang xảy ra cho đến khi kết thúc. Nhưng sẽ có một số vấn đặt ra
+    - Điều gì sẽ xảy ra khi nhiều `channel` cùng read.
+    - Điều gì sẽ xảy ra khi không có `channel` ready.
+    - Sẽ như thế nào nếu bạn muốn process 1 logic khác mà không có `channel` ready.
+  - Cùng đi giải quyết từng vấn đề
+1. nhiều channel cùng read:
+- code example:
+```go
+func MulChannel() {
+	ch1 := make(chan interface{})
+	close(ch1)
+	ch2 := make(chan interface{})
+	close(ch2)
+	var ch1Count, ch2Count int
+	for i := 1000; i >= 0; i-- {
+		select {
+		case <-ch1:
+			ch1Count++
+		case <-ch2:
+			ch2Count++
+		}
+	}
+	fmt.Printf("ch1Count: %d\n ch2Count: %d\n", ch1Count, ch2Count)
+}
+```
+- output:
+```
+- lan1
+ch1Count: 498
+ch2Count: 503
+
+- lan2
+ch1Count: 479
+ch2Count: 522
+```
+  - Như kết quả, thì sau vòng lặp sấp xỉ một nữa được read bởi `ch1` và một nữa `ch2`. Có vẻ ngẫu nhiên nhỉ, vì trong `Golang` các case sẽ random giữa các statement nếu như có `channel` ready. Vậy trong một chương trình thực tế không thể để các state như thế được.
+
+2. Không có channel là ready.
+- Điều gì sẽ xảy ra khi không có channel nào ready, trong thực thế thì không thể để select block `forever`, do đó cần có timeout. Trong golang có package time có thể xử lý timeout được. 
+- code:
+```go
+var ch <-chan int
+select {
+case <-ch: // (1) sẽ không bao giờ unblock bởi vì read từ 1 channel nill
+case <-time.After(2 * time.Second):
+  fmt.Println("Timed out.")
+}
+```
+- output:
+```
+Timed out.
+```
+3. điều gì xảy ra khi không có channel nào ready, và cần làm một process khác sau 1 thời gian.
+- như `switch-case` thì `select-case` cũng có giá trị `default`
+- `default` là cho bạn lựa chọn khi tất cả các select case còn lại luôn luôn `block`
+- code example 1:
+```go
+func SelectDefault() {
+	start := time.Now()
+	var c1, c2 <-chan int
+	select {
+	case <-c1:
+	case <-c2:
+	default:
+		fmt.Printf("Value default %v\n\n", time.Since(start))
+	}
+}
+```
+- output:
+```
+Value default 334ns
+--
+Value default 208ns
+```
+- Như kết quả thì `default` sẽ giúp ta ngăn chặn block
+- Cũng có thể được xem là waiting để đợi một `goroutine` khác process, và nhận kết quả
+- code-example-2:
+```go
+func WaitingOther() {
+	done := make(chan interface{})
+	go func() {
+		time.Sleep(3 * time.Second)
+		fmt.Println("done")
+		close(done)
+	}()
+	workCounter := 0
+loop:
+	for {
+		select {
+		case <-done:
+			break loop
+		default:
+		}
+		fmt.Println(workCounter)
+		workCounter++
+		time.Sleep(1 * time.Second)
+	}
+	fmt.Printf("workCounter %v .\n", workCounter)
+}
+```
+- output:
+```
+0
+1
+2
+done
+workCounter 3
+```
+- Như ví dụ, thì chúng ta có 1 vòng lặp sẽ đợi 1 goroutine khác process, trong ví dụ thì process đó là `sleep 3s`
