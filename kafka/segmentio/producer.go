@@ -12,14 +12,10 @@ import (
 )
 
 func Produce(ctx context.Context) {
-	// initialize a counter
 	i := 0
 
 	l := log.New(os.Stdout, "kafka writer: ", 0)
-	// dialer := &kafka.Dialer{
-	// 	Timeout:   10 * time.Second,
-	// 	DualStack: true,
-	// }
+
 	// intialize the writer with the broker addresses, and the topic
 	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{BrokerAddress},

@@ -10,6 +10,5 @@ func MainKafka() {
 	// go segmentio.Produce(context.Background())
 	// time.Sleep(3 * time.Second)
 	go segmentio.Consume(context.Background(), segmentio.TopicLogging, 0)
-
 	<-s
 }

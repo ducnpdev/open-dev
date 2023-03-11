@@ -53,16 +53,4 @@ func Consume(ctx context.Context, topic string, pa int) {
 		}
 	}
 
-	// for {
-	// 	// the `ReadMessage` method blocks until we receive the next event
-	// 	msg, err := r.ReadMessage(ctx)
-	// 	// now := time.Now()
-	// 	// time.Sleep(time.Second * 3)
-	// 	// fmt.Println(time.Since(now).Milliseconds())
-	// 	if err != nil {
-	// 		panic("could not read message " + err.Error())
-	// 	}
-	// 	// after receiving the message, log its value
-	// 	fmt.Println("received: ", string(msg.Value))
-	// }
 }
