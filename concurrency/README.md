@@ -289,3 +289,145 @@ done
 workCounter 3
 ```
 - Như ví dụ, thì chúng ta có 1 vòng lặp sẽ đợi 1 goroutine khác process, trong ví dụ thì process đó là `sleep 3s`
+
+## livelock
+- livelock là những chương trình tích cực thực hiện các hoạt động đồng thời, nhưng nhữn hoạt động này không làm gì để di chuyển các trạng thái đến các phần tiếp.
+- livelock are programs that are actively performing concurrent operations, but these operations do nothing to move the state of the program forward.
+
+- Bạn đã bao giờ trong hành lang và đi theo hướng một người khác? Người phía trước di chuyển sang 1 hướng để bạn vượt qua, nhưng bạn cũng vừa di chuyển sang hướng tương tự. Vì vậy bạn cũng di chuyển sang hướng khác và người phía trước cũng làm tương tự. Hãy tưởng tượng hành động đó lặp lại mãi mãi, thì bạn sẽ hiểu được livelooks.
+- have you ever been in a hallway walking toward another person? She moves to one side to let you pass, but you are just done the same. So you move to the other side, and she is also done the same. Imagine this going on forever, and you understand livelooks.
+
+- Để có thể hiểu hơn, chúng ta sẽ viết một đoạn code chứng minh. Trong đoạn code sẽ có một số hàm khó hiểu, mình nghĩa các bạn chỉ cẩn hiểu sơ thôi, không cần biết chi tiết nó làm gì.
+- let's actually write some code that will help demonstrate this scenario. First, We will set up a few helper function, that will simplify the example. In order to have a working example, the code here utilize several topics we have not yet covered, I don't advise attemping to understand it. Instead, I recommend following the code callouts to understand the high-lights.
+
+
+## sync-cond
+- theo định nghĩa, `event` là bất kì tính hiệu nào giữa 2 hoặc nhiều `goroutine` mà thực tế nó đã xảy ra. Thông thường bạn sẽ muốn một đợi một tính hiệu trước khi thực hiện một goroutine khác. Nếu chúng ta xem xét để thực hiện điều này mà ko dùng `Cond` thì đơn giản là dùng vòng lặp vô tận.
+```go
+for conditionTrue() == false { 
+	time.Sleep(1*time.Millisecond)
+}
+```
+- Cách giải quyết này cũng tốt, nhưng thực sự là sẽ không hiệu quả, bời vì bạn phải tìm ra thời gian để cấu hình hàm `sleep`. Nếu sleep quá lâu thì sẽ ảnh hưởng đến performance, còn nếu quá ngắn sẽ thì sẽ tốn thời gian của `CPU` một cách không cần thiết. Nó sẽ tốt nếu có một loại function hoặc cách gì đó mà `goroutine` có thể `sleep` cho đến khi có 1 tín hiệu thực thi. Và `Cond` sẽ giúp thực thi điều đó.
+### các function trong cond:
+- NewCond:
+```go
+func NewCond(l Locker) *Cond  // Create a new Cond conditional variable.
+```
+- Broadcast
+```go
+func (c *Cond) Broadcast() 
+// Broadcast will wake up all goroutines waiting for c.
+// Broadcast can be called with or without locking.
+```
+- Signal:
+```go
+func (c *Cond) Signal() 
+// Signal wakes up only 1 goroutine waiting for c.
+// Signal can be called with or without locking.
+```
+- Wait:
+```go
+func (c *Cond) Wait()
+// does not return unless it is woken up by Signal or Broadcast.
+```
+
+- Sử dụng `Cond` để viết một ví dụ đơn giản trước:
+```go
+c := sync.NewCond(&sync.Mutex{}) // (1) new cond instantiate, func NewCond sẽ đáp ứng sync.Locker
+c.L.Lock() // (2) Lock process
+for conditionTrue() == false {
+	c.Wait() // (3)  chúng ta sẽ đợi khi có một thông báo điều kiện được xả ra. Và sẽ block tất cả các goroutine khác.
+}
+c.L.Unlock() // (4) UnLock process
+```
+- Cách tiếp cận này là hiệu quả hơn. Ghi chú, func `Wait` không chỉ block, nó còn treo `goroutine` hiện tại, và cho phép các goroutine khác vẫn chạy trên `OS thread`. 
+- Để giải thích thêm, xem thêm ví dụ sau:
+```go
+func CondExample1() {
+	c := sync.NewCond(&sync.Mutex{})
+	queue := make([]int, 0, 10)
+	removeFromQueue := func(delay time.Duration, i int) {
+		time.Sleep(delay)
+		c.L.Lock()
+		fmt.Println("before remove:", queue)
+		queue = queue[1:]
+		fmt.Println("after remove:", queue)
+		c.L.Unlock()
+		c.Signal()
+	}
+	for i := 0; i < 10; i++ {
+		fmt.Println("start loop;", i)
+		c.L.Lock()
+		for len(queue) == 2 {
+			fmt.Println("len  equal 2, waiting", i)
+			c.Wait()
+		}
+		fmt.Println("Adding to queue", i)
+		queue = append(queue, i)
+		go removeFromQueue(1*time.Second, i)
+		c.L.Unlock()
+		fmt.Println()
+	}
+	fmt.Println("after processing, len queue:", len(queue), queue)
+}
+```
+- output:
+```
+start loop; 0
+Adding to queue 0
+
+start loop; 1
+Adding to queue 1
+
+start loop; 2
+len  equal 2, waiting 2
+before remove: [0 1]
+after remove: [1]
+Adding to queue 2
+
+start loop; 3
+len  equal 2, waiting 3
+before remove: [1 2]
+after remove: [2]
+Adding to queue 3
+
+start loop; 4
+len  equal 2, waiting 4
+before remove: [2 3]
+after remove: [3]
+Adding to queue 4
+
+start loop; 5
+len  equal 2, waiting 5
+before remove: [3 4]
+after remove: [4]
+Adding to queue 5
+
+start loop; 6
+len  equal 2, waiting 6
+before remove: [4 5]
+after remove: [5]
+Adding to queue 6
+
+start loop; 7
+before remove: [5 6]
+after remove: [6]
+Adding to queue 7
+
+start loop; 8
+len  equal 2, waiting 8
+before remove: [6 7]
+after remove: [7]
+Adding to queue 8
+
+start loop; 9
+len  equal 2, waiting 9
+before remove: [7 8]
+after remove: [8]
+Adding to queue 9
+
+after processing, len queue: 2 [8 9]
+```
+- Như kết quả, thì chương trình đã add 10 item đến queue, nhưng nó luôn luôn đợi cho cho 1 item được `dequeue` trước khi `enqueue` một item khác
+- Trong ví dụ có một function `Signal`, nó là một method mà Cond cung cấp để notifying một goroutine đã được block trên wait trước đó.
