@@ -55,7 +55,7 @@ func UpdateUser(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Re
 		return resp, nil
 	}
 	resp.StatusCode = 200
-	err = db.Exec(`update users set email = ?, phone = ? where id = ?`, req.Data.Email, req.Data.Phone, req.Data.ID).Error
+	err = db.Exec(`update users_test set email = ?, phone = ? where id = ?`, req.Data.Email, req.Data.Phone, req.Data.ID).Error
 	if err != nil {
 		resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Err: err})
 		return resp, nil

@@ -52,5 +52,4 @@ func Consume(ctx context.Context, topic string, pa int) {
 			log.Fatal("failed to commit messages:", err)
 		}
 	}
-
 }

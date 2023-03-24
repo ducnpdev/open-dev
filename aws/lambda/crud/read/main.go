@@ -58,7 +58,7 @@ func ReadUser(ctx context.Context,
 	}
 	resp.StatusCode = 200
 	var user = models.UserModel{}
-	err = db.Table("users").Where("id = ?", req.Data.ID).First(&user).Error
+	err = db.Table("users_test").Where("id = ?", req.Data.ID).First(&user).Error
 	if err != nil {
 		resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Err: err})
 		return resp, nil

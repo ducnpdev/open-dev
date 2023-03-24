@@ -54,7 +54,7 @@ func DeleteUser(ctx context.Context, eventReq events.APIGatewayProxyRequest) (Re
 	}
 	resp.StatusCode = 200
 	var user = models.UserModel{}
-	err = db.Debug().Table("users").Delete(&user, req.Data.ID).Error
+	err = db.Debug().Table("users_test").Delete(&user, req.Data.ID).Error
 	if err != nil {
 		resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Err: err})
 		return resp, nil

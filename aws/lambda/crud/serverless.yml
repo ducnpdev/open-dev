@@ -13,8 +13,8 @@ provider:
     IMAGE_BLOG: "image-blog/"
     ROLE: "images-dev-ap-southeast-1-lambdaRole"
     DB_USER: "postgres"
-    DB_PASS: "qojse3-suwkub-tesKox"
-    DB_HOST: "simpson.cd5ykwloyirn.ap-southeast-1.rds.amazonaws.com"
+    DB_PASS: "HZvgAqLjtADSUE4Y6dD0"
+    DB_HOST: "database-1.cd5ykwloyirn.ap-southeast-1.rds.amazonaws.com"
     DB_PORT: 5432
     DB_SERVICE: "postgres"
     DB_SCHEMA: "public"

@@ -5,8 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"log"
-	"open-dev/aws/lambda/crud/pkg"
 	"time"
+
+	"open-dev/aws/lambda/crud/pkg"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -57,7 +58,7 @@ func CreateUser(ctx context.Context,
 	// set http-code 200
 	resp.StatusCode = 200
 	// save new user
-	err = db.Debug().Exec(`insert into users(username,email,phone) values(?,?,?)`, req.Data.User, req.Data.Email, req.Data.Phone).Error
+	err = db.Debug().Exec(`insert into users_test(username,email,phone) values(?,?,?)`, req.Data.User, req.Data.Email, req.Data.Phone).Error
 	if err != nil {
 		resp.Body = ParseResponse(HttpResponse{Uuid: req.RequestID, Err: err})
 		return resp, nil
