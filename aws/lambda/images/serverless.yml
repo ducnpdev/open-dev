@@ -1,5 +1,5 @@
 
-service: images
+service: blog-images
 frameworkVersion: '3'
 
 provider:
@@ -8,9 +8,11 @@ provider:
   region: ap-southeast-1
 
   environment:
-    S3_BUCKET: "images-dev-serverlessdeploymentbucket-1g3trol0zorpp"
+    S3_BUCKET: "s3-south-image-blog"
     IMAGE_BLOG: "image-blog/"
-    
+  # iam:
+    # role: blog-image-action-s3-from-lambda
+  
 package:
   patterns:
     - '!./**'

@@ -72,7 +72,7 @@ func insertImage(ctx context.Context, req events.APIGatewayProxyRequest) (events
 		resp.Body = "base64 required"
 		return resp, nil
 	}
-	pathImage := os.Getenv("IMAGE_BLOG") + reqDTO.DataInput.Phone + reqDTO.DataInput.FileName + reqDTO.DataInput.Name // image.FileNameS3(os.Getenv("FOLDER_INDEX"), reqDTO.DataInput.CCCD, fmt.Sprintf("%s", reqDTO.DataInput.FileName))
+	pathImage := os.Getenv("IMAGE_BLOG") + reqDTO.DataInput.FileName // image.FileNameS3(os.Getenv("FOLDER_INDEX"), reqDTO.DataInput.CCCD, fmt.Sprintf("%s", reqDTO.DataInput.FileName))
 	logger.Printf("%s, start store image at pathImage %s \n", requestId, pathImage)
 	_, dataStore, err := StoreS3(ctx, StoreS3Req{
 		BaseImage:      &imageBase64,
