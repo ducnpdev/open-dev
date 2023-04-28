@@ -16,6 +16,9 @@
   - [Serverless Framework](#serverless-framework)
   - [Aws](#aws)
     - [Lambda](#lambda)
+  - [design pattern](#design-pattern)
+    - [sso là gì](#sso-là-gì)
+    - [Lưu passowrd trong database:](#lưu-passowrd-trong-database)
   - [Performances](#performances)
     - [Standard](#standard)
   - [Contact:](#contact)
@@ -52,6 +55,36 @@
 - Create source đơn giản: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 - Series lambda function đơn giản: https://viblo.asia/s/golang-lambda-serverless-vElaB8eD5kw
 - Crud with postgres: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
+
+## design pattern
+
+### sso là gì
+*   **Khái Niệm:**
+    * Hiểu một cách đơn giản thì SSO (Single Sign-On) là cơ chế xác thực, nó cho phép user đăng nhập trên nhiều hệ thống khác nhau với một ID.
+
+*   **Nó Hoạt động như thế nào:**
+    * `step1`: khi user vào hệ thống Gmail, gmail sẽ kiểm tra xem có login trước đó hay không, nếu không sẽ chuyển đến trang SSO-Authen, để user nhập thông tin login.
+    * `step2-3`: Server SSO authentication sẽ kiểm tra thông tin, nếu hợp lệ sẽ tạo một global session và tạo token.
+    * `step4-7`: Hệ thống Gmail sẽ kiểm tra token từ SSO trả về, và gửi lại cho user.
+    * `step8`: Từ Gmail, user chuyển một trang khác của hệ thống google, ví dụ như youtube.
+    * `step9-10`: Youtube sẽ kiểm tra user chưa login, sẽ chuyển token đến server sso để xác thực có hợp lệ hay không, trả về token.
+    * `step11-14`: Hệ thống youtube sẽ kiểm tra token từ sso, và token sẽ được đăng kí trong hệ thống youtube, cuối cùng là gửi lại token cho user đã được bảo vệ. 
+
+### Lưu passowrd trong database:
+*   **Không Nên**:
+    *   Password lưu plain-text là không tốt vì với những người nắm hệ thống sẽ có thể nhìn thấy
+    *   Lưu password hash là chưa đủ, vì có thể bị tấn công, ví dụ: rainbow-tables.
+    *   Để giảm thiệu các rủi ro, cần thêm `salt` đến password.
+*   **Vậy Salt là gì?**
+    *   Theo như hướng dẫn của OWASP "salt is a unique, randomly genereted string that is added to each password as part of the hashing process"
+*   **Lưu Password và Salt.**
+    *   Salt ở đây không phải là `secret` nên có thể lưu plaintext trong database. Salt được sử dụng để đảm bảo rằng password hash là duy nhất trong hệ thống.
+    *   Password mình sẽ lưu kiểu: hash(pass+salt)
+*   **Validate Password:**
+    *   User nhập password
+    *   Hệ thống sẽ dựa vào user để fetch `salt` được lưu dưới database.
+    *   Hệ thống sẽ hash(pass+salt) (1), pass là user nhập
+    *   So sách mã hash(1) có khớp với hash được lưu dưới database không, nếu giống nhau là password hợp lệ.
 
 ## Performances
 ### Standard
