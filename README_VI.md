@@ -21,6 +21,8 @@
     - [Lưu passowrd trong database:](#lưu-passowrd-trong-database)
   - [Performances](#performances)
     - [Standard](#standard)
+  - [http](#http)
+    - [reuse-http](#reuse-http)
   - [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
@@ -90,6 +92,94 @@
 ### Standard
 - test 2 hàm trả error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
 - so sánh thời gian xử lý hàm convert string sang int: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
+
+## http
+### reuse-http
+```go
+package main
+
+import (
+	"context"
+	"io"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/http/httptrace"
+)
+
+func main() {
+	Reuse()
+	//
+	NonReuse()
+}
+
+// NonReuse, not reuse http
+func NonReuse() {
+	// client trace to log whether the request's underlying tcp connection was re-used
+	clientTrace := &httptrace.ClientTrace{
+		GotConn: func(info httptrace.GotConnInfo) {
+			log.Printf("conn was reused: %t", info.Reused)
+		},
+	}
+	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
+
+	// 1st request
+	req, err := http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 2nd request
+	req, err = http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Reuse, reuse http client
+func Reuse() {
+	var (
+		err error
+	)
+	// client trace to log whether the request's underlying tcp connection was re-used
+	clientTrace := &httptrace.ClientTrace{
+		GotConn: func(info httptrace.GotConnInfo) {
+			log.Printf("conn was reused: %t", info.Reused)
+		},
+	}
+	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
+
+	// 1st request
+	req, err := http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := io.Copy(ioutil.Discard, res.Body); err != nil {
+		log.Fatal(err)
+	}
+	res.Body.Close()
+	// 2nd request
+	req, err = http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
