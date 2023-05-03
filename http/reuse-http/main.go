@@ -21,7 +21,17 @@ func NonReuse() {
 	clientTrace := &httptrace.ClientTrace{
 		GotConn: func(info httptrace.GotConnInfo) {
 			log.Printf("conn was reused: %t", info.Reused)
+			log.Printf("%#v", info)
 		},
+		DNSDone: func(di httptrace.DNSDoneInfo) {
+			log.Printf("DNSDone: %#v", di)
+		},
+		DNSStart: func(di httptrace.DNSStartInfo) {
+			log.Printf("DNSStart: %#v", di)
+		},
+		ConnectStart: func(network, addr string) {
+		},
+		Wait100Continue: func() {},
 	}
 	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
 
@@ -54,6 +64,7 @@ func Reuse() {
 	clientTrace := &httptrace.ClientTrace{
 		GotConn: func(info httptrace.GotConnInfo) {
 			log.Printf("conn was reused: %t", info.Reused)
+			log.Printf("%#v", info)
 		},
 	}
 	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
