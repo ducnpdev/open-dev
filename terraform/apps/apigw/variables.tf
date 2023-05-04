@@ -4,16 +4,10 @@ variable "aws_region" {
   type        = string
 }
 variable "rest_api_name" {
-  default     = "tf-api-gateway-rest-api"
+  default     = "tf-study-api-gateway-rest-api"
   description = "Name of the API Gateway REST API (can be used to trigger redeployments)"
   type        = string
 }
-
-# variable "rest_api_domain_name" {
-#   default     = "example.com"
-#   description = "Domain name of the API Gateway REST API for self-signed TLS certificate"
-#   type        = string
-# }
 
 variable "rest_api_path" {
   default     = "/path1"
