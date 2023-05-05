@@ -26,13 +26,13 @@
 # }
 
 ## vpc-link integration
-# resource "aws_api_gateway_integration" "tfintegrationvpclink" {
-#    rest_api_id             = aws_api_gateway_rest_api.tfapi.id
-#    resource_id             = aws_api_gateway_resource.tfdmsv1vendorlogin.id
-#    http_method             = aws_api_gateway_method.tflogintoken.http_method
-#    integration_http_method = "POST"
-#    type                    = "HTTP"
-#   uri                     = "http://nlb-pri-uat-central-eks-nlb-dba50611de1bc87a.elb.ap-southeast-1.amazonaws.com/dms/v1/mobile/file/create"
-#   connection_type = "VPC_LINK"
-#   connection_id   = "vpcl-rest-api-fw-nlb-pri-uat-central-eks-nlb"
-# }
+resource "aws_api_gateway_integration" "tfintegrationvpclink" {
+   rest_api_id             = aws_api_gateway_rest_api.tfapi.id
+   resource_id             = aws_api_gateway_resource.tfdmsv1vendorlogin.id
+   http_method             = aws_api_gateway_method.tflogintoken.http_method
+   integration_http_method = "POST"
+   type                    = "HTTP"
+   uri                     = "https://www.google.de"
+  connection_type = "VPC_LINK"
+  connection_id   = "qd8qu6"
+}
