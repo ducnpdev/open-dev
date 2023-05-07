@@ -1,0 +1,2 @@
+env_string: "value env string production"
+env_number: 111
