@@ -3,27 +3,28 @@
 ## Contents
 
 - [open-dev](#open-dev)
-  - [Contents](#contents)
-  - [Gin Web Framework](#gin-web-framework)
-    - [API Examples](#api-examples)
-  - [Redis](#redis)
-    - [Rate Limit](#rate-limit)
-  - [Golang Usecase](#golang-usecase)
-    - [Resize Image](#resize-image)
-    - [Context](#context)
-    - [Thuật Toán RSA](#thuật-toán-rsa)
-    - [Thuận Toán ECDSA](#thuận-toán-ecdsa)
-  - [Serverless Framework](#serverless-framework)
-  - [Aws](#aws)
-    - [Lambda](#lambda)
-  - [design pattern](#design-pattern)
-    - [sso là gì](#sso-là-gì)
-    - [Lưu passowrd trong database:](#lưu-passowrd-trong-database)
-  - [Performances](#performances)
-    - [Standard](#standard)
-  - [http](#http)
-    - [reuse-http](#reuse-http)
-  - [Contact:](#contact)
+	- [Contents](#contents)
+	- [Gin Web Framework](#gin-web-framework)
+		- [API Examples](#api-examples)
+	- [Redis](#redis)
+		- [Rate Limit](#rate-limit)
+	- [Golang Usecase](#golang-usecase)
+		- [Resize Image](#resize-image)
+		- [Context](#context)
+		- [Thuật Toán RSA](#thuật-toán-rsa)
+		- [Thuận Toán ECDSA](#thuận-toán-ecdsa)
+	- [Serverless Framework](#serverless-framework)
+	- [Aws](#aws)
+		- [Lambda](#lambda)
+	- [design pattern](#design-pattern)
+		- [https hoạt động như thế nào](#https-hoạt-động-như-thế-nào)
+		- [sso là gì](#sso-là-gì)
+		- [Lưu passowrd trong database:](#lưu-passowrd-trong-database)
+	- [Performances](#performances)
+		- [Standard](#standard)
+	- [http](#http)
+		- [reuse-http](#reuse-http)
+	- [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
 - source code in demo api simples: 
@@ -60,6 +61,12 @@
 
 ## design pattern
 
+### https hoạt động như thế nào
+*   **Dữ liệu Được mã hoá và giãi mã như thế nào**
+    * Step1: client(browser) và server sẽ thiết lập kết nối TCP
+    * Step2: client sẽ gửi "client hello" đến server. Message được gửi đi sẽ chứa danh sách các thuật toán và version của TLS có thể support. Server phản hồi "server hello", lúc nào client sẽ biết server có hỗ trợ thuật toán cũng như version TLS. Tiếp đến server sẽ gửi thêm SSL certification. Trong Certification chứa public-key, host-name, expire-date, etc. Lúc nào client sẽ kiểm tra certification có hợp lệ không.
+    * Step3: Certification hợp lệ, sẽ tạo ra 1 session key, và mã hoá nó dựa vào public-key. Server sẽ nhận session-key và giải mã nó bằng private-key.
+    * Step4: Lúc nào cả Client và Server điều có session-key, data sẽ được mã hoá trong quá trình giao tiếp giữa 2 bên.
 ### sso là gì
 *   **Khái Niệm:**
     * Hiểu một cách đơn giản thì SSO (Single Sign-On) là cơ chế xác thực, nó cho phép user đăng nhập trên nhiều hệ thống khác nhau với một ID.
