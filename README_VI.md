@@ -17,6 +17,9 @@
 	- [Aws](#aws)
 		- [Lambda](#lambda)
 	- [design pattern](#design-pattern)
+		- [Lợi và Hại của việc sử dụng UUIDs:](#lợi-và-hại-của-việc-sử-dụng-uuids)
+			- [Lợi ích](#lợi-ích)
+			- [Tác hại](#tác-hại)
 		- [https hoạt động như thế nào](#https-hoạt-động-như-thế-nào)
 		- [sso là gì](#sso-là-gì)
 		- [Lưu passowrd trong database:](#lưu-passowrd-trong-database)
@@ -61,6 +64,13 @@
 
 ## design pattern
 
+### Lợi và Hại của việc sử dụng UUIDs:
+#### Lợi ích
+- Phù hợp cho việc tạo ra 1 id sử dụng cho distributed system, khả năng bị trùng giữa các hệ thống là vô cùng thấp.
+- UUIDs là tạo ra ngẫu nhiên, nên hầu như không đoán trước được, phù hợp cho các giao dịch có tính bảo mật cao.
+#### Tác hại
+- Độ dài của UUIDs, với 128-bit (32 char) sẽ tốn nơi lưu trữ.
+- UUIDs là không tạo ra theo tuần tự thời gian như time-stamped.
 ### https hoạt động như thế nào
 *   **Dữ liệu Được mã hoá và giãi mã như thế nào**
     * Step1: client(browser) và server sẽ thiết lập kết nối TCP
