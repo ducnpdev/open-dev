@@ -18,6 +18,7 @@
 	- [terraform](#terraform)
 		- [aws-apigw](#aws-apigw)
 	- [Aws](#aws)
+		- [Textract](#textract)
 		- [Lambda](#lambda)
 	- [Performances](#performances)
 		- [Standard](#standard)
@@ -57,6 +58,9 @@
 - this is code: https://github.com/ducnpdev/open-dev/tree/master/terraform/apps/apigw
 ## Aws
 
+### Textract 
+- code example use aws textract identity: https://docs.aws.amazon.com/textract/index.html
+- code: https://github.com/ducnpdev/open-dev/blob/master/aws/textract/main.go
 ### Lambda
 - Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 - Crud with postgres, link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
