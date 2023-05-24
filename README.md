@@ -16,6 +16,7 @@
 		- [concurrency](#concurrency)
 	- [Serverless Framework](#serverless-framework)
 	- [terraform](#terraform)
+		- [sqs](#sqs)
 		- [aws-apigw](#aws-apigw)
 	- [Aws](#aws)
 		- [Textract](#textract)
@@ -54,6 +55,8 @@
 
 ## Serverless Framework
 ## terraform
+### sqs
+- create sqs simple: https://github.com/ducnpdev/open-dev/tree/master/terraform/apps/sqs
 ### aws-apigw
 - this is code: https://github.com/ducnpdev/open-dev/tree/master/terraform/apps/apigw
 ## Aws
