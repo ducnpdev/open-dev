@@ -1,4 +1,4 @@
-package segmentio
+package main
 
 import (
 	"context"
@@ -10,22 +10,26 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
+const (
+	topic         = "topic"
+	TopicLogging  = "logging"
+	BrokerAddress = "localhost:9092"
+	Group         = "logging-consumer-group-1"
+)
+
+func main() {
+	s := make(chan bool)
+	go Consume(context.Background(), TopicLogging, 0)
+	<-s
+}
+
 func Consume(ctx context.Context, topic string, pa int) {
 	// create a new logger that outputs to stdout
 	// and has the `kafka reader` prefix
 	l := log.New(os.Stdout, "kafka reader: ", 0)
-	// initialize a new reader with the brokers and topic
-	// the groupID identifies the consumer and prevents
-	// it from receiving duplicate messages
-	// mechanism, err := scram.Mechanism(scram.SHA512, "username", "password")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	dialer := &kafka.Dialer{
 		Timeout:   10 * time.Second,
 		DualStack: true,
-		// SASLMechanism: mechanism,
 	}
 
 	r := kafka.NewReader(kafka.ReaderConfig{
@@ -35,10 +39,6 @@ func Consume(ctx context.Context, topic string, pa int) {
 		// assign the logger to the reader
 		Logger: l,
 		Dialer: dialer,
-		// Partition: pa,
-		// GroupTopics: []string{},
-		// MinBytes: 10e3, // 10KB
-		// MaxBytes: 10e6, // 10MB
 	})
 	for {
 
@@ -52,17 +52,4 @@ func Consume(ctx context.Context, topic string, pa int) {
 			log.Fatal("failed to commit messages:", err)
 		}
 	}
-
-	// for {
-	// 	// the `ReadMessage` method blocks until we receive the next event
-	// 	msg, err := r.ReadMessage(ctx)
-	// 	// now := time.Now()
-	// 	// time.Sleep(time.Second * 3)
-	// 	// fmt.Println(time.Since(now).Milliseconds())
-	// 	if err != nil {
-	// 		panic("could not read message " + err.Error())
-	// 	}
-	// 	// after receiving the message, log its value
-	// 	fmt.Println("received: ", string(msg.Value))
-	// }
 }
