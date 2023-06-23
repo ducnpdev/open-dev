@@ -36,13 +36,13 @@
     }
 }
 ```
-- output: sẽ trả về 1 field: signatura sử dụng thuật toán sha256 hoặc hmacsha256
+- output: sẽ trả về 1 field: signature sử dụng thuật toán sha256 hoặc hmacsha256
 ```
 {
     "requestId": {{requestId}},
     "requestTime": {{timeRPC3339}},
     "data": {
-        "signatura": {{string}}
+        "signature": {{string}}
     }
 }
 ```
