@@ -177,3 +177,37 @@ CREATE TABLE "users" (
     }
 }
 ```
+
+## Buoi 3
+- Thực hiện call api của service khác
+- Dùng http client
+- Trong buổi 2 có api tạo user, mình sẽ dùng api đó để trước khi insert user vào database. Cần call qua service khác bằng restapi để check số phone có hợp lệ hay không. Khi api trả về `00` thì phone hợp lệ, `!00` là phone không hợp lệ. Thông tin api(postman) sẽ gửi riêng.
+- Trong api create user phải verify signature, sử dụng sha256 đã học buổi 1.
+- input:
+```
+{
+    "requestId": {{uuid}},
+    "requestTime": {{timeRPC3339}},
+    "signature": {{sha256(requestId+phone+username+secretKey)}}
+    // vidu: 
+    // requestId=162b757c-2ab6-4ee4-9201-6b670afca615 
+    // phone=0335287777
+    // username=ducnp5
+    // secretKey=golang
+    // ==> signature=sha256(162b757c-2ab6-4ee4-9201-6b670afca6150335287777ducnp5golang)
+    "data": {
+        "username": {{string}},
+        "name": {{string}},
+        "phone": {{string}}
+    }
+}
+```
+- output:
+```
+{
+    "responseId": {{requestId}},
+    "responseTime": {{timeRPC3339}},
+    "responseCode": {{string}},
+    "responseMessage": {{string}}
+}
+```
