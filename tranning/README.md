@@ -211,3 +211,16 @@ CREATE TABLE "users" (
     "responseMessage": {{string}}
 }
 ```
+
+## Buoi 3
+- tiếp nối những phần đã làm, bài tập buổi 4 sẽ là:
+  - trên apigw-aws, phải cấu hình được limit, burst, quota. Tìm hiểu và giải thích chi tiết từng cái định nghĩa đó là gì.
+  - trong phần create user, sẽ call api check số phone có hợp lệ không, cần cấu hình timeout của http-client( đưa ra config ). Phải kiểm tra được khi nào api xảy ra timeout.
+
+### cấu hình limit, burst, quota:
+- limit 1 request per second: thì chỉ call được 1 api trong 1 second.
+- burst là gì. cách test được burst.
+- quota: set 10 requests per day. khi call api số 11 thì xảy ra chuyện gì.
+
+### cấu hình http timeout.
+- trong hàm init http-client, cần set thêm timeout là bao nhiêu second. Để có thể test được timeout call qua api check phone. Mọi ngừoi để timeout là 1 millisecond là nó xảy ra.
