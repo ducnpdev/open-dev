@@ -35,8 +35,8 @@ func AddDoc() {
 	fmt.Printf("Current GOMAXPROCS: %d\n", currentMaxProcs)
 
 	cfg := elasticsearch.Config{
-		Addresses: []string{"https://e2ab*5b8c.us-central1.gcp.cloud.es.io:443"}, // Replace with your Elasticsearch server URL
-		APIKey:    "TWozQkVhxZnlsZw==",
+		Addresses: []string{"https://e2abb97aa9b143988a13835eca6e5b8c.us-central1.gcp.cloud.es.io:443"}, // Replace with your Elasticsearch server URL
+		APIKey:    "TWozQkRZb0J6QjNxMWs1djRkMk86c2t0cjFxSm1TUDJ3QS1OeVhxZnlsZw==",
 	}
 
 	es, err := elasticsearch.NewClient(cfg)
