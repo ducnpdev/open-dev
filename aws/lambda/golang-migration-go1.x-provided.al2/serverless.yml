@@ -3,17 +3,16 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: go1.x
+  runtime: provided.al2 # <- change from go1.x to provided.al2
+  architecture: arm64   # <- change from x86_64 to arm64
   region: ap-southeast-1
-package:
-  patterns:
-    - '!./**'
-    - ./bin/**
 
 functions:
   hello:
-    handler: bin/x86
+    # handler: bin/x86 # old
+    handler: bootstrap # new
     events:
       - httpApi:
-          path: /x86
+          # path: /x86 # old
+          path: /arm64 # new
           method: get
