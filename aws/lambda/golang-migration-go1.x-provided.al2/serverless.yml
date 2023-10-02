@@ -1,0 +1,19 @@
+service: golang-migration
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: ap-southeast-1
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  hello:
+    handler: bin/x86
+    events:
+      - httpApi:
+          path: /x86
+          method: get
