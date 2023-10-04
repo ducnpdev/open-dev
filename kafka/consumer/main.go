@@ -12,8 +12,8 @@ import (
 
 const (
 	topic         = "topic"
-	TopicLogging  = "logging"
-	BrokerAddress = "localhost:9092"
+	TopicLogging  = "sharing"
+	BrokerAddress = "100.72.3.6:9092"
 	Group         = "logging-consumer-group-1"
 )
 
@@ -41,7 +41,6 @@ func Consume(ctx context.Context, topic string, pa int) {
 		Dialer: dialer,
 	})
 	for {
-
 		m, err := r.FetchMessage(ctx)
 
 		if err != nil {
