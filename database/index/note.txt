@@ -1,0 +1,36 @@
+SHOW max_connections;
+
+SELECT current_setting('max_connections');
+
+EXPLAIN ANALYZE
+select * from info where uuid = '05aee2f5-aa10-4a15-9e2c-44166380e3a4'
+and ref_id =3;
+
+select count(*) from info ;
+
+CREATE INDEX idx_info_ref_id_hash ON info USING HASH(ref_id);
+
+
+
+CREATE INDEX idx_info_ref_id ON info (ref_id);
+
+-- delete from info;
+SELECT md5(random()::text);
+
+SELECT  uuid_in(overlay(overlay(md5(random()::text || ':' || random()::text) placing '4' from 13) placing to_hex(floor(random()*(11-8+1) + 8)::int)::text from 17)::cstring);
+
+DO $FN$
+BEGIN
+  FOR counter IN 10001..12000 LOOP
+    insert into info(id, email, location, name,uuid, age,ref_id)  values(
+		counter, 
+		md5(random()::text), 
+		md5(random()::text), 
+		md5(random()::text), 
+		 uuid_in(overlay(overlay(md5(random()::text || ':' || random()::text) placing '4' from 13) placing to_hex(floor(random()*(11-8+1) + 8)::int)::text from 17)::cstring), 
+		counter,
+		1
+	);
+  END LOOP;
+END;
+$FN$

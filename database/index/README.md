@@ -134,3 +134,41 @@
     "Planning Time: 0.251 ms"
     "Execution Time: 0.614 ms"
     ```
+
+## Hash Index
+- Hash index là được thiết kế cho query data một cách cực nhanh, khi điểu kiện query là bằng trên index column nào đó, hash index có thể làm việc truy vấn data rất nhanh, và đồng thời hash index cũng xác định trực tiếp vùng lưu trữ dữ liệu mong muốn, chỉ phù hợp cho những tình huống query trên so sánh bằng, như `=` or `in`.
+- không như những loại index khác, hash index là khi có một hoạt động thay đổi data ` (inserts, updates, and deletes)` thì sẽ cần rehash lại và quá trình này là tốn kém hơn `BTree` index.
+- Để tạo hash index trong postgres, chúng ta sẽ xử dụng `using hash`, ví dụ
+```sql
+CREATE INDEX hash_name ON table_name USING HASH (column_name);
+```
+  - câu lệnh trên là thực hiện tại index name `hash_name` trên table `table_name`
+  - `column_name` là cột muốn index
+
+- Một số điểm cần chú ý khi tạo hash index là không phù hợp cho việc truy vấn theo `range` hoặc `sorting`. Nhưng trong trường hợp này thì `BTree` sẽ phù hợp hơn.
+- Rõ ràng là hash index sẽ có trường hợp cụ thể và giới hạn của nó.
+
+### Ví dụ: 
+- Tạo index bằng statement:
+```sql
+CREATE INDEX idx_info_ref_id_hash ON info USING HASH(uuid);
+```
+
+### Kết quả
+- với lượng data là 10k record
+- trước khi tạo hash index:
+```sql
+"Seq Scan on info  (cost=0.00..348.00 rows=1 width=148) (actual time=0.076..1.547 rows=1 loops=1)"
+"Filter: ((uuid)::text = '05aee2f5-aa10-4a15-9e2c-44166380e3a4'::text)"
+"Rows Removed by Filter: 9999"
+"Planning Time: 0.302 ms"
+"Execution Time: 1.565 ms"
+```
+- sau khi tạo index:
+```sql
+"Index Scan using idx_info_ref_id_hash on info  (cost=0.00..8.02 rows=1 width=148) (actual time=0.015..0.016 rows=1 loops=1)"
+"Index Cond: ((uuid)::text = '05aee2f5-aa10-4a15-9e2c-44166380e3a4'::text)"
+"Planning Time: 2.123 ms"
+"Execution Time: 0.039 ms"
+```
+- với kết quả trên, thì có thể thấy khi đánh hash index kết quả đã nhanh hơn gấp nhiều lần. 
