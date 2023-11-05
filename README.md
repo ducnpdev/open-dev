@@ -27,6 +27,8 @@
 		- [reuse-http](#reuse-http)
 	- [tls](#tls)
 		- [tls-base64](#tls-base64)
+	- [cryto](#cryto)
+		- [most commonly](#most-commonly)
 	- [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
@@ -167,6 +169,10 @@ func Reuse() {
 ### tls-base64
 - convert file key and file pem to base64
 - link: https://github.com/ducnpdev/open-dev/tree/master/tls/base64parse
+  
+## cryto
+### most commonly
+- link: https://github.com/ducnpdev/open-dev/tree/master/usecase/crypto-demo
 
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
