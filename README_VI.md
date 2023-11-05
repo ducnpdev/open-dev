@@ -27,6 +27,8 @@
 		- [Standard](#standard)
 	- [http](#http)
 		- [reuse-http](#reuse-http)
+	- [tls](#tls)
+		- [tls-base64](#tls-base64)
 	- [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
@@ -197,6 +199,10 @@ func Reuse() {
 	}
 }
 ```
+## tls
+### tls-base64
+- convert file key and file pem to base64
+- link: https://github.com/ducnpdev/open-dev/tree/master/tls/base64parse
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com

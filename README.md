@@ -25,6 +25,8 @@
 		- [Standard](#standard)
 	- [http](#http)
 		- [reuse-http](#reuse-http)
+	- [tls](#tls)
+		- [tls-base64](#tls-base64)
 	- [Contact:](#contact)
 ## Gin Web Framework
 ### API Examples
@@ -67,7 +69,7 @@
 ### Lambda
 - Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 - Crud with postgres, link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
-
+- build docker images: https://aws.amazon.com/blogs/compute/migrating-aws-lambda-functions-from-the-go1-x-runtime-to-the-custom-runtime-on-amazon-linux-2/
 ## Performances
 ### Standard
 - Test simple of function return error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
@@ -160,6 +162,12 @@ func Reuse() {
 	}
 }
 ```
+
+## tls
+### tls-base64
+- convert file key and file pem to base64
+- link: https://github.com/ducnpdev/open-dev/tree/master/tls/base64parse
+
 ## Contact:
 - facebook: https://www.facebook.com/phucducdev/
 - gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
