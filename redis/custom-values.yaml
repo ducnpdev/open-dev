@@ -1,0 +1,23 @@
+master:
+  password: "integration"
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"  # 0.5 CPU
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+persistence:
+  enabled: true
+
+pdb:
+  create: true
+  minAvailable: 1
+  maxUnavailable: ""
+
+architecture: standalone
+
+metrics:
+  enabled: true
+  service:
+    type: LoadBalancer

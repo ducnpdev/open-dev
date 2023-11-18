@@ -12,5 +12,6 @@ func main() {
 	fmt.Println("")
 	redis := redisPkg.InitRedis()
 	fmt.Println(redis)
-	redis.Set(ctx, "demo-key", "", time.Duration(time.Second)*2)
+	err := redis.Set(ctx, "demo-key-123", "", time.Duration(time.Second)*2).Err()
+	fmt.Println(err)
 }

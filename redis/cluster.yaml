@@ -1,0 +1,176 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster
+spec:
+  clusterIP: None
+  ports:
+  - name: redis-port
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+    appCluster: redis-cluster
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-cluster
+data:
+  redis.conf:  |+
+    cluster-enabled yes
+    cluster-node-timeout 15000
+    cluster-config-file /data/nodes.conf
+    appendonly yes
+    protected-mode no
+    dir /data
+    port 6379
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-probes
+data:
+# [START gke_manifests_redis_configmap_configmap_redis_cluster_probes]
+  readiness.sh: |-
+    #!/bin/sh
+
+    pingResponse="$(redis-cli -h localhost ping)"
+    if [ "$?" -eq "124" ]; then
+      echo "PING timed out"
+      exit 1
+    fi
+
+    if [ "$pingResponse" != "PONG"]; then
+      echo "$pingResponse"
+      exit 1
+    fi
+  liveness.sh: |-
+    #!/bin/sh
+
+    pingResponse="$(redis-cli -h localhost ping | head -n1 | awk '{print $1;}')"
+    if [ "$?" -eq "124" ]; then
+      echo "PING timed out"
+      exit 1
+    fi
+
+    if [ "$pingResponse" != "PONG"] && [ "$pingResponse" != "LOADING" ] && [ "$pingResponse" != "MASTERDOWN" ]; then
+      echo "$pingResponse"
+      exit 1
+    fi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  serviceName: "redis-cluster"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        appCluster: redis-cluster
+    spec:
+      terminationGracePeriodSeconds: 20
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - redis
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: redis
+        image: "redis:6.2"
+        command:
+          - "redis-server"
+        args:
+          - "/conf/redis.conf"
+          - "--protected-mode"
+          - "no"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+            - name: redis
+              containerPort: 6379
+              protocol: "TCP"
+            - name: cluster
+              containerPort: 16379
+              protocol: "TCP"
+        # [START gke_manifests_redis_cluster_statefulset_redis_probes]
+        startupProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 20
+          tcpSocket:
+            port: redis
+        livenessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command: ["sh", "-c", "/probes/liveness.sh"]
+        readinessProbe:
+          periodSeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command: ["sh", "-c", "/probes/readiness.sh"]
+        # [END gke_manifests_redis_cluster_statefulset_redis_probes]
+        volumeMounts:
+        - name: conf
+          mountPath: /conf
+          readOnly: false
+        - name: data
+          mountPath: /data
+          readOnly: false
+        - name: probes
+          mountPath: /probes
+          readOnly: true
+      volumes:
+      - name: conf
+        configMap:
+          name: redis-cluster
+          defaultMode: 0755
+      - name: probes
+        configMap:
+          name: redis-probes
+          defaultMode: 0555
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: redis

@@ -1,0 +1,48 @@
+# allow all traffic
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+spec:
+  podSelector: {}
+  egress:
+  - {}
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+# Allow all egress traffic
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: allow-all-egress
+# spec:
+#   podSelector: {}
+#   egress:
+#   - {}
+#   policyTypes:
+#   - Egress
+
+# Allow all ingress traffic 
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: allow-all-ingress
+# spec:
+#   podSelector: {}
+#   ingress:
+#   - {}
+#   policyTypes:
+#   - Ingress
+
+  # ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: default-deny-egress
+# spec:
+#   podSelector: {}
+#   policyTypes:
+#   - Egress
