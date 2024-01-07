@@ -30,6 +30,8 @@
 	- [cryto](#cryto)
 		- [most commonly](#most-commonly)
 	- [Contact:](#contact)
+	- [Give a Star! ⭐](#give-a-star-)
+	- [Buy me a coffee](#buy-me-a-coffee)
 ## Gin Web Framework
 ### API Examples
 - source code in forder gin-web-framework
@@ -180,3 +182,9 @@ func Reuse() {
 - linkedin: https://www.linkedin.com/in/phucducktpm/
 - hashnode: https://hashnode.com/@OpenDev
 - telegram: https://t.me/OpenDevGolang
+
+## Give a Star! ⭐
+
+If you like or are using this project to learn or start your solution, please give it a star. Thanks!
+
+## Buy me a coffee
