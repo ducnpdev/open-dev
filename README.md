@@ -6,6 +6,8 @@
 	- [Contents](#contents)
 	- [Gin Web Framework](#gin-web-framework)
 		- [API Examples](#api-examples)
+	- [Kafka](#kafka)
+		- [Example](#example)
 	- [Redis](#redis)
 		- [Rate Limit](#rate-limit)
 	- [Golang Usecase](#golang-usecase)
@@ -35,6 +37,10 @@
 ## Gin Web Framework
 ### API Examples
 - source code in forder gin-web-framework
+
+## Kafka
+### Example
+- read article install kafka: https://github.com/ducnpdev/open-dev/tree/master/kafka
 
 ## Redis
 - read article install redis: https://github.com/ducnpdev/open-dev/tree/master/redis
