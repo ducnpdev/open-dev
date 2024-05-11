@@ -160,3 +160,35 @@ kafka-configs --bootstrap-server localhost:9092 --alter --entity-type topics --e
 
 - Kafka brokers chia mỗi phân vùng thành các phân đoạn. Mỗi phân đoạn được lưu trữ trong một tệp dữ liệu duy nhất trên đĩa gắn liền với nhà môi giới. Theo mặc định, mỗi phân đoạn chứa 1 GB dữ liệu hoặc một tuần dữ liệu, tùy theo giới hạn nào đạt được trước. Khi nhà môi giới Kafka nhận được dữ liệu cho một phân vùng, khi đạt đến giới hạn phân đoạn, nó sẽ đóng tệp và bắt đầu một phân vùng mới:
 ![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/segment.png)
+
+- Chỉ có một phân đoạn HOẠT ĐỘNG tại bất kỳ thời điểm nào - một phân đoạn đang được ghi vào. Một phân đoạn chỉ có thể bị xóa nếu nó đã được đóng trước đó. Kích thước của một phân khúc được kiểm soát bởi hai cấu hình Nhà môi giới (cũng có thể được sửa đổi ở cấp chủ đề)
+  - log.segment.bytes: kích thước tối đa của một phân đoạn tính bằng byte (mặc định 1 GB)
+  - log.segment.ms: thời gian Kafka sẽ đợi trước khi thực hiện phân đoạn nếu chưa đầy (mặc định 1 tuần)
+- Kafka brokers giữ một tệp xử lý mở cho mọi phân đoạn trong mọi phân vùng - ngay cả các phân đoạn không hoạt động. Điều này dẫn đến số lượng xử lý tệp đang mở thường cao và hệ điều hành phải được điều chỉnh cho phù hợp.
+
+#### Kafka Topic Segments and Indexes
+- Kafka allows consumers to start fetching messages from any available offset. In order to help brokers quickly locate the message for a given offset, Kafka maintains two indexes for each segment:
+  - An offset to position index - It helps Kafka know what part of a segment to read to find a message
+  - A timestamp to offset index - It allows Kafka to find messages with a specific timestamp
+![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/segment1.png)
+
+#### Inspecting the Kafka Directory Structure
+- Kafka lưu trữ tất cả dữ liệu của nó trong một thư mục trên đĩa môi giới. Thư mục này được chỉ định bằng thuộc tính log.dirs trong tệp cấu hình của nhà môi giới. Ví dụ,
+```code
+# A comma separated list of directories under which to store log files
+log.dirs=/tmp/kafka-logs
+```
+- Khám phá thư mục và nhận thấy rằng có một thư mục cho mỗi phân vùng chủ đề. Tất cả các phân đoạn của phân vùng đều nằm bên trong thư mục phân vùng. Ở đây, chủ đề có tên là configure-topic có ba phân vùng, mỗi phân vùng có một thư mục - configure-topic-0, configure-topic-1 và configure-topic-2.
+![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/segment2.png)
+- Đi xuống một thư mục cho một phân vùng chủ đề. Lưu ý các chỉ mục - thời gian và độ lệch cho phân đoạn và chính tệp phân đoạn nơi các thông báo được lưu trữ.
+![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/segment3.png)
+
+#### Considerations for Segment Configurations
+Chúng ta hãy xem lại cấu hình cho các phân đoạn và tìm hiểu tầm quan trọng của chúng.
+- log.segment.bytes Khi các tin nhắn được tạo cho nhà môi giới Kafka, chúng sẽ được thêm vào phân đoạn hiện tại cho phân vùng. Sau khi phân đoạn đã đạt đến kích thước được chỉ định bởi tham số log.segment.bytes (mặc định là 1 GB), phân đoạn sẽ bị đóng và một phân đoạn mới sẽ được mở.
+  - Kích thước phân đoạn nhỏ hơn có nghĩa là các tệp phải được đóng và phân bổ thường xuyên hơn, điều này làm giảm hiệu quả chung của việc ghi đĩa.
+  - Khi một phân khúc đã bị đóng, nó có thể được coi là hết hạn. Việc điều chỉnh kích thước của các phân khúc có thể quan trọng nếu các chủ đề có tỷ lệ sản xuất thấp. Có kích thước phân đoạn nhỏ có nghĩa là Kafka phải mở nhiều tệp, điều này có thể dẫn đến lỗi Quá nhiều tệp đang mở.
+
+- log.segment.ms Một cách khác để kiểm soát thời điểm đóng phân đoạn là sử dụng tham số log.segment.ms, tham số này chỉ định khoảng thời gian sau đó phân đoạn sẽ được đóng. Mặc định là 1 tuần. Kafka sẽ đóng một phân đoạn khi đạt đến giới hạn kích thước hoặc khi đạt đến giới hạn thời gian, tùy điều kiện nào đến trước.
+  - Khi sử dụng giới hạn phân đoạn dựa trên thời gian, điều quan trọng là phải xem xét tác động lên hiệu suất đĩa khi nhiều phân đoạn được đóng đồng thời.
+  - Quyết định xem bạn có muốn nén hàng ngày thay vì hàng tuần hay không

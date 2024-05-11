@@ -12,9 +12,9 @@ import (
 
 const (
 	topic         = "topic"
-	TopicLogging  = "sharing"
-	BrokerAddress = "100.72.3.6:9092"
-	Group         = "logging-consumer-group-1"
+	BrokerAddress = "localhost:9092"
+	TopicLogging  = "logging"
+	Group         = "logging-consumer-group-2"
 )
 
 func main() {
