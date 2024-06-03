@@ -192,3 +192,38 @@ Chúng ta hãy xem lại cấu hình cho các phân đoạn và tìm hiểu tầ
 - log.segment.ms Một cách khác để kiểm soát thời điểm đóng phân đoạn là sử dụng tham số log.segment.ms, tham số này chỉ định khoảng thời gian sau đó phân đoạn sẽ được đóng. Mặc định là 1 tuần. Kafka sẽ đóng một phân đoạn khi đạt đến giới hạn kích thước hoặc khi đạt đến giới hạn thời gian, tùy điều kiện nào đến trước.
   - Khi sử dụng giới hạn phân đoạn dựa trên thời gian, điều quan trọng là phải xem xét tác động lên hiệu suất đĩa khi nhiều phân đoạn được đóng đồng thời.
   - Quyết định xem bạn có muốn nén hàng ngày thay vì hàng tuần hay không
+  
+
+### Consumer Advanced
+#### Các cách để đọc message từ consumer
+  - khi xử lý 1 message từ `kafka`, cần phải lựa chọn thời điểm để commit offsets của nó, và các cách đọc message khác nhau sẽ ảnh hưởng đến các thiết kế và ứng dụng của bạn.
+
+##### At Most Once Delivery
+- trong trường hợp này, khi thực hiện đọc message từ `kafka` thì message đó sẽ commit ngay lập tức.
+- nếu quá trình xử lý message xảy ra lỗi, thì không thể nào khôi phục được message đó -> mất message.
+- phù hợp cho những ứng dụng có thể cho phép data bị mất.
+![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/at_most_once_delivery.png)
+
+##### At Least Once Delivery (thường được xử dụng)
+- đọc message từ `kafka` ít nhất 1 lần,
+- việc đọc message được nhiều lần từ `kafka` sẽ dẫn đến trường hợp trùng message. khi 1 message gặp vấn đề trong lúc xử lý, chúng ta có thể đọc lại.
+- phù hợp cho những hệ thống không được mất message.
+```txt
+Idempotent Processing: Make sure your processing is idempotent (i.e. processing again the messages won’t impact your systems)
+```
+![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/at_least_once_delivery.png)
+
+#### Exactly Once Delivery
+- một số ứng dụng ngoài việc đọc message ít nhất 1 lần( không mất dữ liệu ) mà còn yêu cầu là chính xác đúng 1 lần, 1 message là được xử lý đúng 1 lần.
+- điều này giúp cho `kafka` đáp ứng được 1 số vấn đề yêu cầu hệ thống xử lý đúng 1 lần như api payment
+- để config chỗ này chúng ta cần chỉnh: `processing.guarantee=exactly.once`
+
+#### Summary
+- At most once: `offsets` sẽ được `commit` sau khi message được nhận, nếu xảy ra lỗi xử lý, message sẽ bị mất.
+- At least once: `offsets` sẽ được `commit` sau khi message được xử lý xong, nếu gặp vấn đề thì hoàn toàn có thể đọc lại message -> message nhiều lúc sẽ bị duplicated, sử dụng `idempotent-key` để xử lý.
+- Exactly Once Delivery: sẽ phù hợp với việc xử lý trong api transaction hoặc cơ chế `kafka-streams api`
+
+```txt
+Dòng dưới cùng
+Đối với hầu hết các ứng dụng, bạn nên sử dụng quy trình xử lý 'Ít nhất một lần' và đảm bảo các phép biến đổi/xử lý của bạn là bình thường.
+```

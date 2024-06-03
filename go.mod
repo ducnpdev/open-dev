@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-lambda-go v1.35.0
 	github.com/aws/aws-sdk-go v1.44.161
 	github.com/disintegration/imaging v1.6.2
+	github.com/dustin/go-humanize v1.0.1
 	github.com/elastic/go-elasticsearch/v8 v8.13.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt v3.2.2+incompatible
