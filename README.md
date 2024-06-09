@@ -7,6 +7,8 @@
 	- [Gin Web Framework](#gin-web-framework)
 		- [API Examples](#api-examples)
 	- [Kafka](#kafka)
+		- [Consumer Advanced](#consumer-advanced)
+		- [Producer Advanced](#producer-advanced)
 		- [Example](#example)
 	- [Redis](#redis)
 		- [Rate Limit](#rate-limit)
@@ -39,6 +41,10 @@
 - source code in forder gin-web-framework
 
 ## Kafka
+### Consumer Advanced
+- read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#consumer-advanced
+### Producer Advanced
+- read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#topic-advanced
 ### Example
 - read article install kafka: https://github.com/ducnpdev/open-dev/tree/master/kafka
 
