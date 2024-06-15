@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,7 +13,7 @@ import (
 
 var (
 	BrokerAddress = "localhost:9092"
-	TopicLogging  = "dba4"
+	TopicName     = "consumer-rebalance-3p"
 )
 
 func main() {
@@ -27,32 +26,34 @@ func Produce(ctx context.Context) {
 	// intialize the writer with the broker addresses, and the topic
 	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{BrokerAddress},
-		Topic:   TopicLogging,
+		Topic:   TopicName,
 		// assign the logger to the writer
 		Logger: l,
 		Async:  false,
 	})
 	var ch chan bool
-	for ii := 10001; ii <= 20000; ii++ {
-		// go func() {
-		// for {
-		writeMsg(ctx, w, ii)
-		// time.Sleep(time.Second * 10)
-		// }
-		// }()
+	for ii := 1; ii <= 1000; ii++ {
+		go func() {
+			for {
+				for ii := 1; ii <= 100; ii++ {
+					writeMsg(ctx, w, ii)
+				}
+				// time.Sleep(time.Second * 10)
+			}
+		}()
 	}
 
 	<-ch
 }
 
 func writeMsg(ctx context.Context, w *kafka.Writer, i int) {
-	key := strconv.Itoa(i)
+	key := uuid.New().String()
 	value := "timeNow:" + time.Now().Format(time.RFC3339Nano) + " " + "uuid:" + uuid.New().String()
 	msgs := kafka.Message{
 		Key:   []byte(key),
 		Value: []byte(value),
 	}
-	fmt.Println("write message: key:", key, "value %s", value)
+	fmt.Println("write message: key:", key, "value:", value)
 	err := w.WriteMessages(ctx, msgs)
 	if err != nil {
 		panic("could not write message " + err.Error())

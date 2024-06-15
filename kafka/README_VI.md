@@ -203,6 +203,8 @@ Chúng ta hãy xem lại cấu hình cho các phân đoạn và tìm hiểu tầ
 - nếu quá trình xử lý message xảy ra lỗi, thì không thể nào khôi phục được message đó -> mất message.
 - phù hợp cho những ứng dụng có thể cho phép data bị mất.
 ![Logo của dự án](https://github.com/ducnpdev/open-dev/blob/master/kafka/images/at_most_once_delivery.png)
+1. Create topic and config.
+- 
 
 ##### At Least Once Delivery (thường được xử dụng)
 - đọc message từ `kafka` ít nhất 1 lần,
@@ -224,6 +226,6 @@ Idempotent Processing: Make sure your processing is idempotent (i.e. processing 
 - Exactly Once Delivery: sẽ phù hợp với việc xử lý trong api transaction hoặc cơ chế `kafka-streams api`
 
 ```txt
-Dòng dưới cùng
+Cuối Cùng:
 Đối với hầu hết các ứng dụng, bạn nên sử dụng quy trình xử lý 'Ít nhất một lần' và đảm bảo các phép biến đổi/xử lý của bạn là bình thường.
 ```
