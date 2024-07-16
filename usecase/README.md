@@ -36,6 +36,20 @@ func (ma Cache) Keys() []string {
 }
 
 ```
+- run:
+```go
+go run main.go
+```
+- run test:
+```go
+go test ./... -v --race
+```
+```console
+=== RUN   TestMap
+--- PASS: TestMap (0.00s)
+PASS
+ok      open-dev/usecase/map    (cached)
+```
 
 ## Resize Image:
 - Demo resize image base64:
