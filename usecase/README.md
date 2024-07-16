@@ -1,4 +1,42 @@
 # Usecase
+
+## map
+- code simple use map:
+```go
+type Cache map[string]any
+
+func NewCache() Cache {
+	return Cache{}
+}
+
+func (ma Cache) Get(k string) (any, bool) {
+	val := ma[k]
+	return val, val != nil
+}
+
+func (ma Cache) Set(k string, v any) {
+	ma[k] = v
+}
+
+func (ma Cache) Del(k string) {
+	delete(ma, k)
+}
+
+func (ma Cache) Contains(k string) bool {
+	val := ma[k]
+	return val != nil
+}
+
+func (ma Cache) Keys() []string {
+	keys := make([]string, 0, len(ma))
+	for k := range ma {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+```
+
 ## Resize Image:
 - Demo resize image base64:
 ```go
