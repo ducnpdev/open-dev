@@ -51,6 +51,63 @@ PASS
 ok      open-dev/usecase/map    (cached)
 ```
 
+
+### handle race condition
+- use sync.RWMutex.
+```go
+type Cache struct {
+	data map[string]any
+	sync.RWMutex
+}
+
+func NewCache() Cache {
+	return Cache{
+		data: make(map[string]any),
+	}
+}
+func (ma *Cache) Get(k string) (any, bool) {
+	ma.RLock()
+	defer ma.RUnlock()
+	val := ma.data[k]
+	return val, val != nil
+}
+func (ma *Cache) Set(k string, v any) {
+	ma.Lock()
+	defer ma.Unlock()
+	ma.data[k] = v
+}
+func (ma *Cache) Del(k string) {
+	ma.Lock()
+	defer ma.Unlock()
+	delete(ma.data, k)
+}
+func (ma *Cache) Contains(k string) bool {
+	ma.RLock()
+	defer ma.RUnlock()
+	val := ma.data[k]
+	return val != nil
+}
+func (ma *Cache) Keys() []string {
+	ma.RLock()
+	defer ma.RUnlock()
+	keys := make([]string, 0, len(ma.data))
+	for k := range ma.data {
+		keys = append(keys, k)
+	}
+	return keys
+}
+```
+- run test:
+```go
+go test ./... -v --race
+```
+```console
+=== RUN   TestMap
+--- PASS: TestMap (0.00s)
+PASS
+ok      open-dev/usecase/map    1.374s
+```
+
 ## Resize Image:
 - Demo resize image base64:
 ```go

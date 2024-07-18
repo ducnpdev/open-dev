@@ -1,34 +1,47 @@
 package main
 
-import "log"
+import (
+	"log"
+	"sync"
+)
 
-type Cache map[string]any
+type Cache struct {
+	data map[string]any
+	sync.RWMutex
+}
 
 func NewCache() Cache {
-	return Cache{}
+	return Cache{
+		data: make(map[string]any),
+	}
 }
-
-func (ma Cache) Get(k string) (any, bool) {
-	val := ma[k]
+func (ma *Cache) Get(k string) (any, bool) {
+	ma.RLock()
+	defer ma.RUnlock()
+	val := ma.data[k]
 	return val, val != nil
 }
-
-func (ma Cache) Set(k string, v any) {
-	ma[k] = v
+func (ma *Cache) Set(k string, v any) {
+	ma.Lock()
+	defer ma.Unlock()
+	ma.data[k] = v
 }
-
-func (ma Cache) Del(k string) {
-	delete(ma, k)
+func (ma *Cache) Del(k string) {
+	ma.Lock()
+	defer ma.Unlock()
+	delete(ma.data, k)
 }
-
-func (ma Cache) Contains(k string) bool {
-	val := ma[k]
+func (ma *Cache) Contains(k string) bool {
+	ma.RLock()
+	defer ma.RUnlock()
+	val := ma.data[k]
 	return val != nil
 }
-
-func (ma Cache) Keys() []string {
-	keys := make([]string, 0, len(ma))
-	for k := range ma {
+func (ma *Cache) Keys() []string {
+	ma.RLock()
+	defer ma.RUnlock()
+	keys := make([]string, 0, len(ma.data))
+	for k := range ma.data {
 		keys = append(keys, k)
 	}
 	return keys
