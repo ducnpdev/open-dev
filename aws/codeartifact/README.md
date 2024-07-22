@@ -29,19 +29,22 @@
 aws codeartifact create-domain --domain open-dev-domain
 
 - create repo
-aws codeartifact create-repository --domain open-dev-domain --domain-owner 06***48 --repository open-dev-repo
+aws codeartifact create-repository --domain open-dev-domain --domain-owner 0***0 --repository open-dev-repo
 
 - login
-aws codeartifact login --tool npm --repository open-dev-repo --domain open-dev-domain --domain-owner 06***48
+aws codeartifact login --tool npm --repository open-dev-repo --domain open-dev-domain --domain-owner 0***0
 
 - get list package
 aws codeartifact list-packages --domain open-dev-domain --repository open-dev-repo
 
 - push package
-aws codeartifact publish-package-version  --domain open-dev-domain --repository open-dev-repo --format generic --namespace abc --asset-sha256         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 --package abc --package-version 1.0.0 --asset-content abc.txt --asset-name abc 
+aws codeartifact publish-package-version  --domain open-dev-domain --repository open-dev-repo --format generic --namespace abc --asset-sha256         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 --package abc --package-version 3.0.0 --asset-content abc.aar --asset-name nameaar
 
-- delete repo
+- delete repoP
 aws codeartifact delete-repository --domain open-dev-domain --domain-owner 06***58 --repository open-dev-repo
 
 - delete domain
 aws codeartifact delete-domain --domain open-dev-domain --domain-owner 06***58
+P
+- download package
+ aws codeartifact get-package-version-asset --domain open-dev-domain --repository open-dev-repo --domain-owner 0***0 --format generic  --package abc --package-version 2.0.0 --asset abc --namespace abc  abc1
