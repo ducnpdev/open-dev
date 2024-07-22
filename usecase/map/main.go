@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/sha1"
+	"fmt"
 	"log"
 	"sync"
 )
@@ -10,45 +12,88 @@ type Cache struct {
 	sync.RWMutex
 }
 
-func NewCache() Cache {
-	return Cache{
-		data: make(map[string]any),
+type CacheIndex []*Cache
+
+func NewCacheIndex(n int) CacheIndex {
+	cacheIndex := make([]*Cache, n)
+	for i := 0; i < n; i++ {
+		cacheIndex[i] = &Cache{
+			data: make(map[string]any),
+		}
 	}
+	return cacheIndex
 }
-func (ma *Cache) Get(k string) (any, bool) {
-	ma.RLock()
-	defer ma.RUnlock()
-	val := ma.data[k]
-	return val, val != nil
+
+func (c CacheIndex) getIndexCache(key string) int {
+	checkSum := sha1.Sum([]byte(key))
+	hash := int(checkSum[0])
+	return hash % len(c)
 }
-func (ma *Cache) Set(k string, v any) {
-	ma.Lock()
-	defer ma.Unlock()
-	ma.data[k] = v
+
+func (c CacheIndex) getCache(key string) *Cache {
+	index := c.getIndexCache(key)
+	return c[index]
 }
-func (ma *Cache) Del(k string) {
-	ma.Lock()
-	defer ma.Unlock()
-	delete(ma.data, k)
+
+func (c CacheIndex) Get(k string) (any, bool) {
+	indexCache := c.getCache(k)
+	indexCache.RLock()
+	defer indexCache.RUnlock()
+
+	val, ok := indexCache.data[k]
+	return val, ok
 }
-func (ma *Cache) Contains(k string) bool {
-	ma.RLock()
-	defer ma.RUnlock()
-	val := ma.data[k]
-	return val != nil
+
+func (c CacheIndex) Set(k string, v any) {
+	indexCache := c.getCache(k)
+	indexCache.Lock()
+	defer indexCache.Unlock()
+	indexCache.data[k] = v
 }
-func (ma *Cache) Keys() []string {
-	ma.RLock()
-	defer ma.RUnlock()
-	keys := make([]string, 0, len(ma.data))
-	for k := range ma.data {
-		keys = append(keys, k)
+
+func (c CacheIndex) Del(k string) {
+	indexCache := c.getCache(k)
+	indexCache.Lock()
+	defer indexCache.Unlock()
+	delete(indexCache.data, k)
+}
+
+func (c CacheIndex) Contains(k string) bool {
+	indexCache := c.getCache(k)
+	indexCache.RLock()
+	defer indexCache.RUnlock()
+	_, ok := indexCache.data[k]
+	return ok
+}
+
+func (c CacheIndex) Keys() []string {
+	keys := make([]string, 0)
+	mutex := sync.Mutex{}
+	wg := sync.WaitGroup{}
+
+	wg.Add(len(c))
+
+	for _, cacheItem := range c {
+		func(m *Cache) {
+			m.RLock()
+			for k := range m.data {
+				mutex.Lock()
+				keys = append(keys, k)
+				mutex.Unlock()
+			}
+			m.RUnlock()
+			wg.Done()
+		}(cacheItem)
 	}
+
 	return keys
 }
 
 func Run() {
-	cache := NewCache()
+
+	cache := NewCacheIndex(10)
+
+	fmt.Printf("index: %d", cache.getIndexCache("1"))
 
 	cache.Set("1", 1)
 	cache.Set("2", 2)
