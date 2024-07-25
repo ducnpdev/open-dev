@@ -11,17 +11,15 @@ import (
 )
 
 const (
-	topic         = "dba4"
+	TopicLogging  = "topic-123"
 	BrokerAddress = "localhost:9092"
-	TopicLogging  = "dba4"
-	Group         = "dba4-group-1"
+	Group         = "topic-123-group-1"
+	workerNumber  = 21
 )
 
 func main() {
 	s := make(chan bool)
-	go Consume(context.Background(), TopicLogging, 0)
-	// go Consume(context.Background(), TopicLogging, 0)
-	// go Consume(context.Background(), TopicLogging, 0)
+	Consume(context.Background(), TopicLogging, 0)
 	<-s
 }
 
@@ -38,29 +36,34 @@ func Consume(ctx context.Context, topic string, p1a int) {
 		Brokers: []string{BrokerAddress},
 		Topic:   topic,
 		GroupID: Group,
-		// assign the logger to the reader
-		Logger: l,
-		Dialer: dialer,
+		Logger:  l,
+		Dialer:  dialer,
 	})
-	var ch chan bool
-	for ii := 1; ii <= 500; ii++ {
+	var waiting chan bool
+	for ii := 1; ii <= workerNumber; ii++ {
 		go func() {
 			for {
-				m, err := r.FetchMessage(ctx)
-				fmt.Println("start process")
-				time.Sleep(time.Millisecond * 200)
-				fmt.Println("end process")
-				if err != nil {
-					break
-				}
-				fmt.Printf("message at topic/partition/offset %v/%v/%v: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
-				if err := r.CommitMessages(ctx, m); err != nil {
-					log.Fatal("failed to commit messages:", err)
-				}
+				handleLogic(ctx, r)
 			}
 		}()
 	}
 
-	<-ch
+	<-waiting
 
+}
+
+func handleLogic(ctx context.Context, r *kafka.Reader) {
+	m, err := r.FetchMessage(ctx)
+	fmt.Println("start process handle message")
+	defer fmt.Println("end process handle message")
+	// sleep handle logic
+	time.Sleep(time.Millisecond * 1000)
+	if err != nil {
+		return
+	}
+
+	fmt.Printf("message at topic/partition/offset %v/%v/%v: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
+	if err := r.CommitMessages(ctx, m); err != nil {
+		log.Fatal("failed to commit messages:", err)
+	}
 }
