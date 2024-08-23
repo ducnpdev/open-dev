@@ -431,3 +431,64 @@ after processing, len queue: 2 [8 9]
 ```
 - Như kết quả, thì chương trình đã add 10 item đến queue, nhưng nó luôn luôn đợi cho cho 1 item được `dequeue` trước khi `enqueue` một item khác
 - Trong ví dụ có một function `Signal`, nó là một method mà Cond cung cấp để notifying một goroutine đã được block trên wait trước đó.
+
+## Single Flight
+- giúp tránh việc thực thi cùng một công việc nhiều lần bởi nhiều goroutine cùng lúc. Khi nhiều goroutine yêu cầu cùng một công việc, singleflight sẽ đảm bảo rằng chỉ có một goroutine thực hiện công việc đó và các goroutine khác sẽ nhận được kết quả từ lần thực hiện đó.
+1. Code example:
+```go
+package main
+import (
+	"fmt"
+	"math/rand"
+	"time"
+
+	"golang.org/x/sync/singleflight"
+)
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+var (
+	concurrencyControl = &singleflight.Group{}
+	n                  = 10
+)
+func locking(_ int) (int64, error) {
+	now := time.Now()
+	randomNumber := rand.Intn(1000) + 1
+	time.Sleep(time.Millisecond * time.Duration(randomNumber))
+	return time.Since(now).Milliseconds(), nil
+}
+func main() {
+	now := time.Now()
+	keyS := "flight"
+	for i := 1; i <= n; i++ {
+		go func() {
+			value, err, s := concurrencyControl.Do(keyS, func() (interface{}, error) {
+				return locking(i)
+			})
+			if err != nil {
+				fmt.Printf("Goroutine %d: error: %v\n", i, err)
+				return
+			}
+			fmt.Printf("Goroutine %d: result: %v (shared: %v)\n", i, value, s)
+
+		}()
+	}
+	time.Sleep(time.Second * 5)
+	fmt.Println("Done", time.Since(now).Milliseconds())
+}
+```
+2. output
+```console
+ducnp@nguyens-MacBook-Pro-4 singleflight % go run main.go
+Goroutine 9: result: 556 (shared: true)
+Goroutine 8: result: 556 (shared: true)
+Goroutine 10: result: 556 (shared: true)
+Goroutine 3: result: 556 (shared: true)
+Goroutine 6: result: 556 (shared: true)
+Goroutine 5: result: 556 (shared: true)
+Goroutine 7: result: 556 (shared: true)
+Goroutine 2: result: 556 (shared: true)
+Goroutine 4: result: 556 (shared: true)
+Goroutine 1: result: 556 (shared: true)
+Done 5001
+```
