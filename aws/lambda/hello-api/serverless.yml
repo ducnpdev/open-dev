@@ -1,0 +1,26 @@
+service: golang-hello-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: provided.al2
+  architecture: arm64
+  region: ap-southeast-1
+package:
+  individually: true
+  patterns:
+    - "!./**"
+    - ./bin/**
+
+functions:
+  hello:
+    handler: bootstrap
+    package:
+      artifact: bin/hello.zip
+    timeout: 6
+    memorySize: 256
+    description: function hello api
+    events:
+      - httpApi:
+          path: /hello
+          method: get
