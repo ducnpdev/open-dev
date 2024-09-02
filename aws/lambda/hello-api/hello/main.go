@@ -20,7 +20,7 @@ func Handler(ctx context.Context) (Response, error) {
 	var buf bytes.Buffer
 
 	body, err := json.Marshal(map[string]interface{}{
-		"message": "Hello API executed successfully!",
+		"message": "OpenDev Hello API executed successfully!",
 	})
 	if err != nil {
 		return Response{StatusCode: 404}, err
