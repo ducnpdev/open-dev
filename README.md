@@ -13,6 +13,7 @@
 		- [Example](#example)
 	- [Redis](#redis)
 		- [Rate Limit](#rate-limit)
+		- [redis pub-sub](#redis-pub-sub)
 	- [Golang Usecase](#golang-usecase)
 		- [Resize Image](#resize-image)
 		- [Context](#context)
@@ -58,6 +59,9 @@
 - read article install redis: https://github.com/ducnpdev/open-dev/tree/master/redis
 ### Rate Limit
 - read article lear more rate-limit: https://viblo.asia/p/golang-ratelimit-la-gi-su-dung-ByEZkn3qKQ0
+
+### redis pub-sub
+- pub-sub code example: https://github.com/ducnpdev/open-dev/tree/master/redis/pubsub
 
 ## Golang Usecase
 
