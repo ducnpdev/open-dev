@@ -242,3 +242,42 @@ Pipeline pattern là một mô hình thiết kế (design pattern) trong lập t
 1. Input: Dữ liệu đầu vào được chuyển đến bước đầu tiên của pipeline.
 2. Processing: Mỗi bước trong pipeline thực hiện một công việc cụ thể, sau đó chuyển kết quả đến bước tiếp theo.
 3. Output: Kết quả cuối cùng sẽ được xử lý qua tất cả các bước trong pipeline và được trả về.
+
+## Publish-Subscribe
+Publish-Subscribe (Pub/Sub) là một mô hình thiết kế (design pattern) trong hệ thống phân tán và lập trình, cho phép các thành phần giao tiếp với nhau một cách không đồng bộ và không chặt chẽ. Nó tách biệt giữa việc gửi (publish) và nhận (subscribe) dữ liệu, giúp các hệ thống dễ dàng mở rộng và quản lý.
+
+### Đặc điểm chính của Publish-Subscribe Pattern:
+1. Publisher (Người xuất bản): Là thành phần tạo ra và phát đi thông báo (message). Publisher không cần biết ai sẽ nhận thông báo này.
+2. Subscriber (Người đăng ký): Là thành phần đăng ký để nhận thông báo. Subscriber không cần biết thông tin đến từ đâu hoặc ai đã gửi.
+3. Event Broker (Người điều phối sự kiện): Là trung gian giữa Publisher và Subscriber. Nó chịu trách nhiệm chuyển thông báo từ Publisher đến tất cả các Subscriber đã đăng ký với loại thông báo cụ thể.
+
+### Cách hoạt động của Publish-Subscribe Pattern:
+- Publisher phát (publish) một thông báo tới một topic hoặc channel cụ thể.
+- Subscriber đăng ký (subscribe) với topic hoặc channel đó để nhận thông báo liên quan.
+- Khi có một sự kiện hoặc thông báo mới từ Publisher, broker sẽ gửi nó đến tất cả các Subscribers quan tâm đến topic hoặc channel đó.
+
+Điều quan trọng là các Publisher và Subscriber không biết về sự tồn tại của nhau, chúng giao tiếp qua broker trung gian. Điều này tạo ra sự tách biệt mạnh mẽ giữa các thành phần trong hệ thống.
+
+### Ưu điểm của Publish-Subscribe Pattern:
+1. Tách biệt các thành phần: Publisher và Subscriber không cần phải biết nhau, tạo điều kiện thuận lợi cho sự mở rộng và thay đổi.
+2. Khả năng mở rộng: Hệ thống có thể mở rộng một cách dễ dàng khi cần thêm nhiều Publisher hoặc Subscriber.
+3. Không đồng bộ: Thông báo có thể được phát đi mà không cần chờ đợi phản hồi từ Subscriber, tăng tính linh hoạt cho hệ thống.
+4. Phân tán: Pub/Sub thường được sử dụng trong các hệ thống phân tán, giúp quản lý dữ liệu và sự kiện trên các môi trường khác nhau một cách hiệu quả.
+Mô hình tổng quan của Publish-Subscribe Pattern:
+```console
+Publisher --> Event Broker --> Subscriber 1
+                           --> Subscriber 2
+                           --> Subscriber 3
+```
+- Publisher gửi một thông báo tới Event Broker.
+- Event Broker phân phối thông báo tới tất cả các Subscribers đã đăng ký với loại thông báo đó.
+
+### Ví dụ trong thực tế:
+- Hệ thống thông báo:
+  Trong một hệ thống thông báo của mạng xã hội, khi một người đăng bài (publish), tất cả những người theo dõi (subscribe) sẽ nhận được thông báo mới.
+- Ứng dụng nhắn tin và trò chuyện:
+  Khi một người dùng gửi tin nhắn trong một nhóm chat (publish), tất cả các thành viên trong nhóm chat đó (subscribe) sẽ nhận được tin nhắn.
+- Hệ thống phân tích dữ liệu:
+  Trong các hệ thống phân tích dữ liệu lớn, dữ liệu từ các nguồn khác nhau có thể được publish tới các hệ thống phân tích khác nhau (subscribe) để xử lý.
+- Dịch vụ push notification:
+  Khi một ứng dụng mobile cần gửi thông báo tới người dùng, họ có thể phát (publish) thông báo này, và những người dùng đã đăng ký (subscribe) sẽ nhận được thông báo đó.
