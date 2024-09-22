@@ -120,3 +120,6 @@ volatile-ttl - Loại bỏ một khóa trong số những khóa có đặt thờ
 volatile-random - Loại bỏ một khóa ngẫu nhiên trong số những khóa có đặt thời gian hết hạn.
 allkeys-lru - Giống như volatile-lru, nhưng sẽ loại bỏ mọi loại khóa, cả khóa thông thường và khóa có đặt thời gian hết hạn.
 allkeys-random - Giống như volatile-random, nhưng sẽ loại bỏ mọi loại khóa, cả khóa thông thường và khóa có đặt thời gian hết hạn.
+
+## Pub sub
+- code example pub-sub redis
