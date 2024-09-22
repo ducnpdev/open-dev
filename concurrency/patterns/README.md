@@ -230,3 +230,15 @@ Ketqua: 6
 Ketqua: 8
 Ketqua: 10
 ```
+
+## Pipeline Pattern
+Pipeline pattern là một mô hình thiết kế (design pattern) trong lập trình, đặc biệt hữu ích khi xử lý chuỗi các tác vụ (tasks) mà mỗi tác vụ có thể xử lý dữ liệu một cách tuần tự. Mỗi bước trong pipeline có thể được coi là một công đoạn (stage), và dữ liệu sẽ đi qua từng công đoạn để được xử lý dần dần.
+### Đặc điểm của Pipeline Pattern:
+1. Chia nhỏ tác vụ: Bài toán lớn được chia nhỏ thành nhiều bước hoặc nhiều tác vụ nhỏ hơn. Mỗi bước trong pipeline chịu trách nhiệm xử lý một phần công việc.
+2. Tuần tự hóa xử lý: Các bước thực thi tuần tự, bước sau sử dụng kết quả của bước trước. Dữ liệu được "chảy" qua từng bước giống như nước qua các ống trong một hệ thống dẫn nước.
+3. Tăng khả năng tái sử dụng: Mỗi bước có thể là một phần độc lập, dễ tái sử dụng trong các pipeline khác.
+4. Tính mở rộng: Pipeline pattern dễ mở rộng khi bạn muốn thêm các bước mới hoặc loại bỏ các bước không cần thiết.
+### Cách hoạt động của Pipeline Pattern:
+1. Input: Dữ liệu đầu vào được chuyển đến bước đầu tiên của pipeline.
+2. Processing: Mỗi bước trong pipeline thực hiện một công việc cụ thể, sau đó chuyển kết quả đến bước tiếp theo.
+3. Output: Kết quả cuối cùng sẽ được xử lý qua tất cả các bước trong pipeline và được trả về.
