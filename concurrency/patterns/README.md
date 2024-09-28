@@ -352,3 +352,34 @@ func main() {
 	wg.Wait()
 }
 ```
+
+## Rate limit
+- là tỉ lệ các event , process được xử lý trong 1 khoảng thời gian.
+- hữu ích để quản lý tần xuất cả các nhiệm vụ
+- ví dụ như apigw sẽ quản lý số lượng request/second, hoặc request/day
+1. code:
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	rate := time.Millisecond * 500
+	ticker := time.NewTicker(rate)
+	defer ticker.Stop()
+
+	requests := make(chan int, 10)
+	for i := 1; i <= 10; i++ {
+		requests <- i
+	}
+	close(requests)
+
+	for req := range requests {
+		<-ticker.C // Esperar el siguiente tick
+		fmt.Println("Processing event:", req)
+	}
+}
+```
