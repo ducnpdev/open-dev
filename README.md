@@ -20,6 +20,7 @@
 		- [RSA](#rsa)
 		- [ecdsa algorithm](#ecdsa-algorithm)
 		- [concurrency](#concurrency)
+			- [pattern](#pattern)
 	- [Serverless Framework](#serverless-framework)
 	- [terraform](#terraform)
 		- [sqs](#sqs)
@@ -80,6 +81,8 @@
 
 ### concurrency
 - source-code example:
+#### pattern
+- 7 pattern thiết yếu trong golang: https://github.com/ducnpdev/open-dev/tree/master/concurrency/patterns
 
 ## Serverless Framework
 ## terraform

@@ -281,3 +281,36 @@ Publisher --> Event Broker --> Subscriber 1
   Trong các hệ thống phân tích dữ liệu lớn, dữ liệu từ các nguồn khác nhau có thể được publish tới các hệ thống phân tích khác nhau (subscribe) để xử lý.
 - Dịch vụ push notification:
   Khi một ứng dụng mobile cần gửi thông báo tới người dùng, họ có thể phát (publish) thông báo này, và những người dùng đã đăng ký (subscribe) sẽ nhận được thông báo đó.
+
+## Select Timeout
+- sử dung select timeout để giúp hạn chế việc phải chờ một tác vụ nào đó quá lâu.
+- không bị block các process
+- vídu:
+  - connect database
+  - http client
+  - ...
+1. code example:
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	c := make(chan string)
+
+	go func() {
+		time.Sleep(2 * time.Second)
+		c <- "result"
+	}()
+
+	select {
+	case res := <-c:
+		fmt.Println("Received:", res)
+	case <-time.After(1 * time.Second):
+		fmt.Println("Timeout")
+	}
+}
+```
