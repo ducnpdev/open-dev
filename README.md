@@ -7,10 +7,13 @@
 	- [Let's Go](#lets-go)
 	- [Gin Web Framework](#gin-web-framework)
 		- [API Examples](#api-examples)
-	- [Kafka](#kafka)
-		- [Consumer Advanced](#consumer-advanced)
-		- [Producer Advanced](#producer-advanced)
-		- [Example](#example)
+	- [Queue](#queue)
+		- [Kafka](#kafka)
+			- [Consumer Advanced](#consumer-advanced)
+			- [Producer Advanced](#producer-advanced)
+			- [Example](#example)
+		- [RabbitMQ](#rabbitmq)
+			- [Code Example](#code-example)
 	- [Redis](#redis)
 		- [Rate Limit](#rate-limit)
 		- [redis pub-sub](#redis-pub-sub)
@@ -48,13 +51,17 @@
 ### API Examples
 - source code in forder gin-web-framework
 
-## Kafka
-### Consumer Advanced
+## Queue
+### Kafka
+#### Consumer Advanced
 - read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#consumer-advanced
-### Producer Advanced
+#### Producer Advanced
 - read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#topic-advanced
-### Example
+#### Example
 - read article install kafka: https://github.com/ducnpdev/open-dev/tree/master/kafka
+### RabbitMQ
+#### Code Example
+- read source: https://github.com/ducnpdev/golang-rabbitmq
 
 ## Redis
 - read article install redis: https://github.com/ducnpdev/open-dev/tree/master/redis
