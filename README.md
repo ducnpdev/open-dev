@@ -31,6 +31,7 @@
 	- [Aws](#aws)
 		- [Textract](#textract)
 		- [Lambda](#lambda)
+		- [S3](#s3)
 	- [Performances](#performances)
 		- [Standard](#standard)
 	- [http](#http)
@@ -106,6 +107,10 @@
 - Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
 - Crud with postgres, link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
 - build docker images: https://aws.amazon.com/blogs/compute/migrating-aws-lambda-functions-from-the-go1-x-runtime-to-the-custom-runtime-on-amazon-linux-2/
+
+### S3
+- link code examle: https://github.com/ducnpdev/open-dev/tree/master/aws/s3
+
 ## Performances
 ### Standard
 - Test simple of function return error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
