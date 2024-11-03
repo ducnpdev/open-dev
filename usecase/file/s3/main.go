@@ -32,8 +32,22 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "File uploaded err %s", err)
 }
 
+// deleteFileS3Handler
+func deleteFileS3Handler(w http.ResponseWriter, r *http.Request) {
+	key := r.FormValue("key")
+
+	openS3 := opendevS3.AwsS3{}
+	err := openS3.DeleteFile(key)
+	if err == nil {
+		fmt.Fprintf(w, "File deleted successfully.")
+		return
+	}
+	fmt.Fprintf(w, "File deleted err %s", err)
+}
+
 func main() {
 	http.HandleFunc("/upload", uploadFileHandler)
+	http.HandleFunc("/delete", deleteFileS3Handler)
 	fmt.Println("Server started at :8080")
 	http.ListenAndServe(":8080", nil)
 }

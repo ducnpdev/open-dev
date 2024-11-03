@@ -29,7 +29,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "MIME Header: %+v\n", handler.Header)
 
 	// Save the file to the server
-	dst, err := os.Create("/Users/ducnp/Downloads/open-dev/usecase/file" + handler.Filename)
+	dst, err := os.Create("/upload/" + handler.Filename)
 	if err != nil {
 		http.Error(w, "Could not create file", http.StatusInternalServerError)
 		return
