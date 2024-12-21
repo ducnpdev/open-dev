@@ -1,4 +1,8 @@
 # cloudwatch
+
+# Log Group
+- code golang example: https://github.com/ducnpdev/open-dev/tree/master/aws/cloudwatch/logGroup/README.md
+
 ## log insight
 - thống kê lượt call theo api key id
 ```json
