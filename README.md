@@ -18,6 +18,7 @@
 		- [Rate Limit](#rate-limit)
 		- [redis pub-sub](#redis-pub-sub)
 	- [Golang Usecase](#golang-usecase)
+		- [Strategy Management Connect database](#strategy-management-connect-database)
 		- [Resize Image](#resize-image)
 		- [Context](#context)
 		- [RSA](#rsa)
@@ -73,6 +74,9 @@
 - pub-sub code example: https://github.com/ducnpdev/open-dev/tree/master/redis/pubsub
 
 ## Golang Usecase
+
+### Strategy Management Connect database
+- link: https://viblo.asia/p/golang-chien-luoc-quan-ly-ket-noi-database-thong-qua-gorm-zXRJ8r6dVGq
 
 ### Resize Image
 - edit size of image from base64: https://github.com/ducnpdev/open-dev/tree/master/usecase#resize-image
