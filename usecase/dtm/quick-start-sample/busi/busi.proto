@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package busi;
+
+option go_package = "./busi";
+
+// The dtm service definition.
+service Busi {
+  rpc TransInRevert(BusiReq) returns (BusiReply) {}
+  rpc TransOutRevert(BusiReq) returns (BusiReply) {}
+
+  rpc TransIn(BusiReq) returns (BusiReply) {}
+  rpc TransOut(BusiReq) returns (BusiReply) {}
+}
+
+message BusiReq {
+  int64 Amount = 1;
+  int64 UserID = 2;
+  string TransOutResult = 3;
+  string TransInResult = 4;
+}
+
+message BusiReply {
+  string Message = 1;
+}

@@ -1,0 +1,74 @@
+# Default values for dtm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# DTM configuration. Specify content for config.yaml
+# ref: https://github.com/dtm-labs/dtm/blob/main/conf.sample.yml
+configuration: |-
+  Store: # specify which engine to store trans status
+    Driver: 'boltdb' # default store engine
+
+# replicaCount Number of dtm replicas to deploy
+replicaCount: 1
+
+# dtm image version
+image:
+  repository: yedf/dtm
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 200Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+service:
+  type: ClusterIP
+  ports:
+    http: 36789
+    grpc: 36790
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - your-domain.com

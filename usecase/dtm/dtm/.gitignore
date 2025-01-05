@@ -1,0 +1,20 @@
+conf.yml
+*.out
+*.log
+# dist
+.idea/**
+.vscode
+default.etcd
+*/**/*.bolt
+bench/bench
+helper/bench/bench
+helper/qs/qs
+# Output file of unit test coverage
+coverage.*
+profile.*
+test.sh
+dtm
+dtm-*
+dtm.*
+cache
+
