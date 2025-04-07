@@ -15,3 +15,6 @@
 vendor/
 
 .DS_Store
+
+
+aws/cloudfront-func/amazon-cloudfront-functions
