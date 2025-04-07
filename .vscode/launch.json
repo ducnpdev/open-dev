@@ -12,7 +12,9 @@
             "args": [
                "http_msg_doAndCommit" 
             ],
-            "program": "${workspaceFolder}/usecase/dtm/dtm-examples/main.go"
+            "program": "${workspaceFolder}/usecase/dtm/dtm-cases/flash/main.go"
+            // "program": "${workspaceFolder}/usecase/dtm/quick-start-sample/workflow-http/main.go"
+            
         }
     ]
 }
