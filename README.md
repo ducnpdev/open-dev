@@ -1,231 +1,199 @@
-# open-dev
+# Open-Dev
 
-## Contents
+A comprehensive collection of Go (Golang) development examples, patterns, and best practices. This repository serves as a learning resource and reference implementation for various Go development scenarios.
 
-- [open-dev](#open-dev)
-	- [Contents](#contents)
-	- [Let's Go](#lets-go)
-	- [Gin Web Framework](#gin-web-framework)
-		- [API Examples](#api-examples)
-	- [Queue](#queue)
-		- [Kafka](#kafka)
-			- [Consumer Advanced](#consumer-advanced)
-			- [Producer Advanced](#producer-advanced)
-			- [Example](#example)
-		- [RabbitMQ](#rabbitmq)
-			- [Code Example](#code-example)
-	- [Redis](#redis)
-		- [Rate Limit](#rate-limit)
-		- [redis pub-sub](#redis-pub-sub)
-	- [Golang Usecase](#golang-usecase)
-		- [Strategy Management Connect database](#strategy-management-connect-database)
-		- [Resize Image](#resize-image)
-		- [Context](#context)
-		- [RSA](#rsa)
-		- [ecdsa algorithm](#ecdsa-algorithm)
-		- [concurrency](#concurrency)
-			- [pattern](#pattern)
-	- [Serverless Framework](#serverless-framework)
-	- [terraform](#terraform)
-		- [sqs](#sqs)
-		- [aws-apigw](#aws-apigw)
-	- [Aws](#aws)
-		- [Textract](#textract)
-		- [Lambda](#lambda)
-		- [S3](#s3)
-	- [Performances](#performances)
-		- [Standard](#standard)
-	- [http](#http)
-		- [reuse-http](#reuse-http)
-	- [tls](#tls)
-		- [tls-base64](#tls-base64)
-	- [cryto](#cryto)
-		- [most commonly](#most-commonly)
-	- [Contact:](#contact)
-	- [Give a Star! ⭐](#give-a-star-)
-	- [Buy me a coffee](#buy-me-a-coffee)
+## Table of Contents
 
-## Let's Go  
-- build web application golang
-- link: https://github.com/ducnpdev/open-dev/tree/master/letgo
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+- [Core Components](#core-components)
+  - [Web Development](#web-development)
+  - [Message Queues](#message-queues)
+  - [Database & Caching](#database--caching)
+  - [Cloud & Infrastructure](#cloud--infrastructure)
+  - [Security & Cryptography](#security--cryptography)
+  - [Performance & Optimization](#performance--optimization)
+  - [Design Patterns & Best Practices](#design-patterns--best-practices)
+- [Contributing](#contributing)
+- [Contact & Support](#contact--support)
+- [License](#license)
 
-## Gin Web Framework
-### API Examples
-- source code in forder gin-web-framework
+## Overview
 
-## Queue
-### Kafka
-#### Consumer Advanced
-- read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#consumer-advanced
-#### Producer Advanced
-- read document vietnamese: https://github.com/ducnpdev/open-dev/blob/master/kafka/README_VI.md#topic-advanced
-#### Example
-- read article install kafka: https://github.com/ducnpdev/open-dev/tree/master/kafka
-### RabbitMQ
-#### Code Example
-- read source: https://github.com/ducnpdev/golang-rabbitmq
+This repository contains practical examples and implementations of various Go development concepts, from basic web applications to advanced distributed systems patterns. It's designed to help developers learn and implement Go best practices in real-world scenarios.
 
-## Redis
-- read article install redis: https://github.com/ducnpdev/open-dev/tree/master/redis
-### Rate Limit
-- read article lear more rate-limit: https://viblo.asia/p/golang-ratelimit-la-gi-su-dung-ByEZkn3qKQ0
+## Getting Started
 
-### redis pub-sub
-- pub-sub code example: https://github.com/ducnpdev/open-dev/tree/master/redis/pubsub
-
-## Golang Usecase
-
-### Strategy Management Connect database
-- link: https://viblo.asia/p/golang-chien-luoc-quan-ly-ket-noi-database-thong-qua-gorm-zXRJ8r6dVGq
-
-### Resize Image
-- edit size of image from base64: https://github.com/ducnpdev/open-dev/tree/master/usecase#resize-image
-
-
-### Context
-- Handle context timeout: https://github.com/ducnpdev/open-dev/blob/master/usecase/context/timeout.go
-
-### RSA
-- Encrypt Decrypt Data, code example: https://github.com/ducnpdev/open-dev/blob/master/usecase/rsa/REAME.md
-
-### ecdsa algorithm
-- This is code example: https://github.com/ducnpdev/open-dev/blob/master/usecase/ecdsa/ecdsa.go
-
-### concurrency
-- source-code example:
-#### pattern
-- 7 pattern thiết yếu trong golang: https://github.com/ducnpdev/open-dev/tree/master/concurrency/patterns
-
-## Serverless Framework
-## terraform
-### sqs
-- create sqs simple: https://github.com/ducnpdev/open-dev/tree/master/terraform/apps/sqs
-### aws-apigw
-- this is code: https://github.com/ducnpdev/open-dev/tree/master/terraform/apps/apigw
-## Aws
-
-### Textract 
-- code example use aws textract identity: https://docs.aws.amazon.com/textract/index.html
-- code: https://github.com/ducnpdev/open-dev/blob/master/aws/textract/main.go
-### Lambda
-- Demo simple lambda function: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda
-- Crud with postgres, link source: https://github.com/ducnpdev/open-dev/tree/master/aws/lambda/crud
-- build docker images: https://aws.amazon.com/blogs/compute/migrating-aws-lambda-functions-from-the-go1-x-runtime-to-the-custom-runtime-on-amazon-linux-2/
-
-### S3
-- link code examle: https://github.com/ducnpdev/open-dev/tree/master/aws/s3
-
-## Performances
-### Standard
-- Test simple of function return error: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
-- Test convert string to int of 3 function: https://opendev.hashnode.dev/golang-test-performance-function-standard-1
-
-## http
-### reuse-http
-```go
-package main
-
-import (
-	"context"
-	"io"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"net/http/httptrace"
-)
-
-func main() {
-	Reuse()
-	//
-	NonReuse()
-}
-
-// NonReuse, not reuse http
-func NonReuse() {
-	// client trace to log whether the request's underlying tcp connection was re-used
-	clientTrace := &httptrace.ClientTrace{
-		GotConn: func(info httptrace.GotConnInfo) {
-			log.Printf("conn was reused: %t", info.Reused)
-		},
-	}
-	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
-
-	// 1st request
-	req, err := http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// 2nd request
-	req, err = http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// Reuse, reuse http client
-func Reuse() {
-	var (
-		err error
-	)
-	// client trace to log whether the request's underlying tcp connection was re-used
-	clientTrace := &httptrace.ClientTrace{
-		GotConn: func(info httptrace.GotConnInfo) {
-			log.Printf("conn was reused: %t", info.Reused)
-		},
-	}
-	traceCtx := httptrace.WithClientTrace(context.Background(), clientTrace)
-
-	// 1st request
-	req, err := http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if _, err := io.Copy(ioutil.Discard, res.Body); err != nil {
-		log.Fatal(err)
-	}
-	res.Body.Close()
-	// 2nd request
-	req, err = http.NewRequestWithContext(traceCtx, http.MethodGet, "http://example.com", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+1. Clone the repository:
+```bash
+git clone https://github.com/ducnpdev/open-dev.git
+cd open-dev
 ```
 
-## tls
-### tls-base64
-- convert file key and file pem to base64
-- link: https://github.com/ducnpdev/open-dev/tree/master/tls/base64parse
-  
-## cryto
-### most commonly
-- link: https://github.com/ducnpdev/open-dev/tree/master/usecase/crypto-demo
+2. Install dependencies:
+```bash
+go mod download
+```
 
-## Contact:
-- facebook: https://www.facebook.com/phucducdev/
-- gmail: ducnp09081998@gmail.com or phucducktpm@gmail.com
-- linkedin: https://www.linkedin.com/in/phucducktpm/
-- hashnode: https://hashnode.com/@OpenDev
-- telegram: https://t.me/OpenDevGolang
+3. Explore the examples in each directory based on your interests.
 
-## Give a Star! ⭐
+## Core Components
 
-If you like or are using this project to learn or start your solution, please give it a star. Thanks!
+### Web Development
+- **Let's Go**: Build web applications in Go
+  - [Basic web application examples](letgo/)
+- **Gin Web Framework**: 
+  - [RESTful API examples](gin-web-framework/)
+  - [Middleware implementations](gin-web-framework/)
+  - [Error handling patterns](gin-web-framework/)
 
-## Buy me a coffee
+### Message Queues
+- **Kafka**: 
+  - [Advanced Consumer Patterns](kafka/README_VI.md#consumer-advanced)
+    - Consumer group management
+    - Offset handling
+    - Error recovery
+  - [Advanced Producer Patterns](kafka/README_VI.md#topic-advanced)
+    - Topic management
+    - Partition strategies
+    - Message delivery guarantees
+  - [Basic Examples](kafka/)
+    - [Installation guide](kafka/)
+    - Simple producer/consumer setup
+    - Configuration examples
+- **RabbitMQ**: 
+  - [Code examples and patterns](https://github.com/ducnpdev/golang-rabbitmq)
+  - Message routing
+  - Queue management
+  - Exchange types
+
+### Database & Caching
+- **Redis**:
+  - [Rate Limiting Implementation](redis/)
+    - Token bucket algorithm
+    - Sliding window implementation
+    - [Rate limit article](https://viblo.asia/p/golang-ratelimit-la-gi-su-dung-ByEZkn3qKQ0)
+  - [Pub/Sub Patterns](redis/pubsub/)
+    - Publisher implementation
+    - Subscriber patterns
+    - Message handling
+  - [Installation Guide](redis/)
+    - Setup instructions
+    - Configuration examples
+    - Connection management
+- **Database Connection Management**: 
+  - [Strategy patterns for database connections](https://viblo.asia/p/golang-chien-luoc-quan-ly-ket-noi-database-thong-qua-gorm-zXRJ8r6dVGq)
+  - Connection pooling
+  - Retry mechanisms
+  - Error handling
+
+### Cloud & Infrastructure
+- **AWS**:
+  - [Lambda Functions](aws/lambda/):
+    - [Simple function examples](aws/lambda/)
+    - [CRUD operations with Postgres](aws/lambda/crud)
+    - [Docker integration guide](https://aws.amazon.com/blogs/compute/migrating-aws-lambda-functions-from-the-go1-x-runtime-to-the-custom-runtime-on-amazon-linux-2/)
+  - [S3 Operations](aws/s3/):
+    - File upload/download
+    - Bucket management
+    - Access control
+  - [Textract Integration](aws/textract/):
+    - [Document processing](aws/textract/main.go)
+    - [Identity verification](https://docs.aws.amazon.com/textract/index.html)
+- **Terraform**:
+  - [SQS Setup](terraform/apps/sqs/):
+    - Queue creation
+    - Access policies
+    - Monitoring setup
+  - [API Gateway Configuration](terraform/apps/apigw/):
+    - Endpoint setup
+    - Integration patterns
+    - Security configurations
+- **Serverless Framework**: 
+  - [Implementation guide](https://viblo.asia/p/golang-cai-dat-serverless-framework-lambada-aws-4dbZNQXkKYM)
+  - Function deployment
+  - Environment management
+
+### Security & Cryptography
+- **RSA**: 
+  - [Encryption/Decryption examples](usecase/rsa/REAME.md)
+  - Key generation
+  - Message signing
+- **ECDSA**: 
+  - [Digital signature implementation](usecase/ecdsa/ecdsa.go)
+  - Key pair management
+  - Signature verification
+- **TLS**: 
+  - [Certificate handling](tls/base64parse/)
+  - Base64 conversion
+  - Key management
+- **Password Security**: 
+  - Hashing algorithms
+  - Salt implementation
+  - Secure storage practices
+
+### Performance & Optimization
+- **HTTP Optimization**: 
+  - [Connection reuse patterns](http/reuse-http/)
+  ```go
+  // Example of HTTP connection reuse
+  func Reuse() {
+      clientTrace := &httptrace.ClientTrace{
+          GotConn: func(info httptrace.GotConnInfo) {
+              log.Printf("conn was reused: %t", info.Reused)
+          },
+      }
+      // ... implementation details in http/reuse-http/
+  }
+  ```
+- **Performance Testing**: 
+  - [Standard function benchmarks](performances/)
+  - [Error handling performance](https://opendev.hashnode.dev/golang-test-performance-function-standard-1)
+  - [String conversion benchmarks](https://opendev.hashnode.dev/golang-test-performance-function-standard-1)
+- **Concurrency Patterns**: 
+  - [Essential Go concurrency patterns](concurrency/patterns/)
+  - Channel management
+  - Goroutine best practices
+
+### Design Patterns & Best Practices
+- **UUID Usage**: 
+  - Benefits:
+    - Distributed system compatibility
+    - Unpredictability for security
+  - Drawbacks:
+    - Storage overhead
+    - Non-sequential nature
+- **HTTPS Implementation**: 
+  - TLS handshake process
+  - Certificate management
+  - Security best practices
+- **SSO (Single Sign-On)**: 
+  - Authentication flow
+  - Token management
+  - Session handling
+- **Database Design**: 
+  - Password storage best practices
+  - Salt implementation
+  - Hash algorithms
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## Contact & Support
+
+- **Author**: Đức Nguyễn Phúc
+- **Email**: ducnp09081998@gmail.com or phucducktpm@gmail.com
+- **Social Media**:
+  - [Facebook](https://www.facebook.com/phucducdev/)
+  - [LinkedIn](https://www.linkedin.com/in/phucducktpm/)
+  - [Hashnode](https://hashnode.com/@OpenDev)
+  - [Telegram](https://t.me/OpenDevGolang)
+
+## License
+
+This project is licensed under the terms of the license included in the repository. See the [LICENSE](LICENSE) file for details.
+
+---
+
+⭐ If you find this repository helpful, please give it a star! Your support helps maintain and improve this resource for the Go community.
