@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -42,16 +43,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	var builder strings.Builder
+
 	for i := 1; i < len(resp.Blocks); i++ {
-		a := *resp.Blocks[i]
-		fmt.Println(a)
+		// a := *resp.Blocks[i]
+		// fmt.Println(a)
 		if *resp.Blocks[i].BlockType == "LINE" {
-			fmt.Println(*resp.Blocks[i].Text)
-		} else if *resp.Blocks[i].BlockType == "WORD" {
-			fmt.Println(*resp.Blocks[i].Text)
-		} else {
-			fmt.Println(*resp.Blocks[i].BlockType)
-			fmt.Println(*resp.Blocks[i].Text)
+			fmt.Println(i, "-", *resp.Blocks[i].Text)
+			builder.WriteString(*resp.Blocks[i].Text)
 		}
+		// else if *resp.Blocks[i].BlockType == "WORD" {
+		// 	fmt.Println(*resp.Blocks[i].Text)
+		// } else {
+		// 	fmt.Println(*resp.Blocks[i].BlockType)
+		// 	fmt.Println(*resp.Blocks[i].Text)
+		// }
 	}
+
+	fmt.Println(builder.String())
 }
