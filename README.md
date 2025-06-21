@@ -51,7 +51,7 @@
 
 ## Gin Web Framework
 ### API Examples
-- source code in forder gin-web-framework
+- Source code is located in the gin-web-framework folder
 
 ## Queue
 ### Kafka

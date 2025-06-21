@@ -3,44 +3,55 @@ import crypto from 'crypto';
 const secret = 'godev';
 
 const signingMethod = 'sha256';
-const response401InvalidSign = {
-    statusCode: 401,
+const response403InvalidSign = {
+    statusCode: 403,
     statusDescription: 'Unauthorized invalid get header signature'
 };
 
-const response401InvalidRequestId = {
-    statusCode: 401,
-    statusDescription: 'Unauthorized invalid get header requestid'
+const response403InvalidExpiredTime = {
+    statusCode: 403,
+    statusDescription: 'Unauthorized invalid get header expired'
 };
 
-
-const response401NotMatch = {
-    statusCode: 401,
+const response403NotMatch = {
+    statusCode: 403,
     statusDescription: 'Unauthorized header signature not match'
 };
 
-const response200 = {
-    statusCode: 200,
-    statusDescription: 'success'
+const response403Expired = {
+    statusCode: 403,
+    statusDescription: 'Request expired'
 };
+
 
 async function handler(event) {
     var requestObj = event.request;
-    var headers = requestObj.headers;
+    var queryString = requestObj.querystring;
 
-    var signature = headers.signature.value;
+    // console.log(requestObj)
+
+    var signature = queryString.signature.value;
+    // console.log(signature)
     if (!signature) {
-        return response401InvalidSign
+        return response403InvalidSign
     }
 
-    var requestId = headers.requestid.value
-    if (!requestId) {
-        return response401InvalidRequestId
+    var expiredTime = queryString.expiredTime.value
+    // console.log(expiredTime)
+    if (!expiredTime) {
+        return response403InvalidExpiredTime
     }
 
-    var sign = crypto.createHmac(signingMethod, secret).update(requestId).digest('hex');
+    var sign = crypto.createHmac(signingMethod, secret).update(expiredTime).digest('hex');
     if (sign !== signature) {
-        return response401NotMatch
+        return response403NotMatch
     }
-    return response200
+
+    const now = Math.floor(Date.now() / 1000);
+    console.log(now)
+    console.log(expiredTime)
+    if (now > expiredTime){
+        return response403Expired
+    }
+    return requestObj
 }
